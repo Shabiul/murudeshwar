@@ -56,7 +56,7 @@ export default function Footer() {
 
                 {/* BOTTOM UTILS */}
                 <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-[10px] text-white/30 font-sans uppercase tracking-widest">
-                    <p>© 2026 Murudeshwara. All rights reserved.</p>
+                    <p>© 2026 Murudeshwara. All rights reserved. Designed & Made by <a href="https://naazailabs.com" target="_blank" rel="noopener noreferrer" className="hover:text-brand-gold transition-colors underline decoration-brand-gold/30">naazailabs.com</a></p>
                     <div className="flex gap-8 mt-4 md:mt-0">
                         <span className="cursor-pointer hover:text-white transition-colors">Privacy Policy</span>
                         <span className="cursor-pointer hover:text-white transition-colors">Terms</span>
