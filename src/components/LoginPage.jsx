@@ -8,8 +8,8 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [email, setEmail] = useState('admin@murudeshwara.com');
-    const [password, setPassword] = useState('NaazAiLabs@786345');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
@@ -172,14 +172,6 @@ export default function LoginPage() {
                     </form>
                 </div>
 
-                {/* Credentials card */}
-                <div className="mt-4 bg-amber-50 border border-amber-200/80 rounded-2xl p-5">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-2">Admin Credentials</p>
-                    <div className="space-y-1 font-mono text-xs text-amber-900">
-                        <p><span className="text-amber-600">Email:</span> admin@murudeshwara.com</p>
-                        <p><span className="text-amber-600">Password:</span> NaazAiLabs@786345</p>
-                    </div>
-                </div>
 
                 <p className="text-center text-[11px] text-stone-400 mt-6">
                     Murudeshwar Resort · Secure Admin Access
