@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { padiCourses } from '../data/padiCourses';
+import { useSiteData } from '../hooks/useSiteData';
+import { padiCourses as fallbackPadiCourses } from '../data/padiCourses';
 
 // ─── Small reusable components ────────────────────────────────────────────────
 
@@ -66,6 +67,7 @@ const fadeUp = {
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
+  const { data: padiCourses } = useSiteData('padiCourses', fallbackPadiCourses);
   const course = padiCourses.find(c => c.id === courseId);
 
   if (!course) {

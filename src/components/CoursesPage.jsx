@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { padiCourses } from '../data/padiCourses';
+import { useSiteData } from '../hooks/useSiteData';
+import { padiCourses as fallbackPadiCourses } from '../data/padiCourses';
 
 const levelColors = {
   beginner:     'text-emerald-400 border-emerald-500/30 bg-emerald-950/30',
@@ -21,6 +22,7 @@ function LevelBadge({ level = '' }) {
 }
 
 export default function CoursesPage() {
+  const { data: padiCourses } = useSiteData('padiCourses', fallbackPadiCourses);
   return (
     <section className="min-h-screen w-full relative pt-32 pb-24 px-4 md:px-10 overflow-hidden">
       {/* Ocean gradient background */}

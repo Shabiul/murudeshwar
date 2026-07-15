@@ -1,8 +1,10 @@
 import React from 'react';
 import { CircularGallery } from './ui/circular-gallery-2';
-import { galleryData } from '../data/galleryData';
+import { useSiteData } from '../hooks/useSiteData';
+import { galleryData as fallbackGalleryData } from '../data/galleryData';
 
 export default function GalleryPage() {
+    const { data: galleryData } = useSiteData('galleryData', fallbackGalleryData);
     // Map galleryData to the items format required by CircularGallery
     const galleryItems = galleryData.map((item) => ({
         image: item.src,

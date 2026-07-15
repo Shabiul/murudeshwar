@@ -1,7 +1,9 @@
-import { services } from '../data/services';
+import { useSiteData } from '../hooks/useSiteData';
+import { services as fallbackServices } from '../data/services';
 import { Link } from 'react-router-dom';
 
 export default function PricingSection() {
+    const { data: services } = useSiteData('services', fallbackServices);
     return (
         <section className="relative z-10 w-full bg-[#0c0c0c] py-20 px-4 md:px-10">
             <div className="max-w-7xl mx-auto">

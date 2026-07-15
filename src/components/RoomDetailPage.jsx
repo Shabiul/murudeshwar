@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { roomsData } from '../data/roomsData';
+import { useSiteData } from '../hooks/useSiteData';
+import { roomsData as fallbackRoomsData } from '../data/roomsData';
 import ReservationForm from './ReservationForm';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -8,6 +9,8 @@ export default function RoomDetailPage() {
     const { roomId } = useParams();
     const [showReserve, setShowReserve] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const { data: roomsData } = useSiteData('roomsData', fallbackRoomsData);
 
     // Fallback to deluxe-sea-view if not found or invalid
     const room = roomsData[roomId] || roomsData["deluxe-sea-view"];

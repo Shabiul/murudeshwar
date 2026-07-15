@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { motion } from "framer-motion";
-import { bentoCards } from "../data/travelData";
+import { useSiteData } from '../hooks/useSiteData';
+import { bentoCards as fallbackBentoCards } from '../data/travelData';
 
 const Card = ({ card, index }) => {
     const isLarge = card.size === "large";
@@ -96,6 +97,7 @@ const Card = ({ card, index }) => {
 };
 
 export default function BentoGrid() {
+    const { data: bentoCards } = useSiteData('travelData', fallbackBentoCards);
     return (
         <section className="px-4 py-20 pb-60 max-w-[1920px] mx-auto bg-[#0c0c0c]">
             <div className="mb-12 md:mb-20 px-4 md:px-12">

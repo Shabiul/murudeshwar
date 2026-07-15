@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { crew } from '../data/crew';
+import { useSiteData } from '../hooks/useSiteData';
+import { crew as fallbackCrew } from '../data/crew';
 
 export default function CrewDetailPage() {
   const { crewId } = useParams();
+  const { data: crew } = useSiteData('crew', fallbackCrew);
   const member = crew.find(m => m.id === crewId);
 
   if (!member) {

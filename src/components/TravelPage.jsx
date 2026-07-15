@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { destinations } from '../data/destinations';
+import { useSiteData } from '../hooks/useSiteData';
+import { destinations as fallbackDestinations } from '../data/destinations';
 import ReservationForm from './ReservationForm';
 
 export default function TravelPage() {
+    const { data: destinations } = useSiteData('destinations', fallbackDestinations);
     const [selectedDestination, setSelectedDestination] = useState(null);
 
     return (

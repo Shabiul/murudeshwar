@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { crew } from '../data/crew';
+import { useSiteData } from '../hooks/useSiteData';
+import { crew as fallbackCrew } from '../data/crew';
 
 export default function CrewPage() {
+  const { data: crew } = useSiteData('crew', fallbackCrew);
   const teams = [...new Set(crew.map(member => member.team))];
 
   return (

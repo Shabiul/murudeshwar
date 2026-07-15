@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { attractions } from '../data/attractions';
+import { useSiteData } from '../hooks/useSiteData';
+import { attractions as fallbackAttractions } from '../data/attractions';
 
 // Premium SVG Icon Components (AI Slop-Free)
 const PinIcon = ({ className = "w-5 h-5" }) => (
@@ -31,6 +32,7 @@ const CompassIcon = ({ className = "w-4 h-4" }) => (
 );
 
 export default function AttractionsPage() {
+  const { data: attractions } = useSiteData('attractions', fallbackAttractions);
   const [selectedAttraction, setSelectedAttraction] = useState(null);
 
   return (
