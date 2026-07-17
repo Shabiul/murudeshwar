@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../utils/supabaseClient';
+import CrmLayout from './crm/CrmLayout';
 
 export default function CrmDashboard() {
     const { user, logout, isAuthenticated } = useAuth();
@@ -457,11 +458,8 @@ export default function CrmDashboard() {
         }, 0);
 
     return (
-        <section className="min-h-screen bg-slate-50 text-slate-800 pt-28 pb-16 px-4 md:px-10 relative font-sans">
-            {/* Ambient Background Gradient Decoration */}
-            <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-[120px] pointer-events-none" />
-
-            <div className="max-w-7xl mx-auto relative z-10">
+        <CrmLayout title="Bookings & Leads" subtitle="Manage stays reservations, scuba diving bookings, bike rentals, and contact leads">
+            <div className="relative font-sans">
                 {/* ── SQL Configuration Banner ── */}
                 <AnimatePresence>
                     {dbError && (
@@ -474,7 +472,7 @@ export default function CrmDashboard() {
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div className="max-w-3xl">
                                     <h4 className="font-serif text-lg text-amber-700 mb-1 flex items-center gap-2">
-                                        ⚠️ Database Table Setup Required
+                                        [!] Database Table Setup Required
                                     </h4>
                                     <p className="text-slate-700 text-xs leading-relaxed">
                                         {dbError} Copy and paste this script directly into your Supabase SQL Editor.
@@ -484,7 +482,7 @@ export default function CrmDashboard() {
                                     onClick={() => fetchLeads()}
                                     className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs transition-colors"
                                 >
-                                    🔄 Retry Database
+                                    (i) Retry Database
                                 </button>
                             </div>
                             <div className="mt-4 bg-slate-900 border border-slate-700 rounded-2xl p-4 overflow-x-auto text-[10px] font-mono text-emerald-400 leading-normal">
@@ -510,45 +508,12 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                     )}
                 </AnimatePresence>
 
-                {/* ── Header ── */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-8 mb-8">
-                    <div>
-                        <div className="flex items-center gap-3">
-                            <h1 className="font-serif text-4xl text-slate-900">CRM Dashboard</h1>
-                            <span className="text-[10px] font-mono tracking-widest uppercase bg-amber-100 border border-amber-300 text-amber-800 px-2 py-0.5 rounded-full font-bold">
-                                Supabase Live Console
-                            </span>
-                        </div>
-                        <p className="text-slate-500 text-xs mt-1">Manage stays reservations, scuba diving bookings, bike rentals, and contact leads.</p>
-                    </div>
-
-                    <div className="flex items-center gap-4 mt-4 md:mt-0">
-                        <div className="flex items-center gap-3 bg-white border border-slate-200 px-4 py-2 rounded-full shadow-sm">
-                            <img
-                                className="w-8 h-8 rounded-full border border-amber-300"
-                                src={user.avatar}
-                                alt={user.name}
-                            />
-                            <div className="text-left leading-tight pr-2">
-                                <p className="text-xs font-bold text-slate-800">{user.name}</p>
-                                <p className="text-[10px] text-slate-500 capitalize">{user.provider} Admin</p>
-                            </div>
-                        </div>
-                        <button
-                            onClick={logout}
-                            className="px-5 py-2.5 bg-rose-500/10 hover:bg-rose-600 border border-rose-200 text-rose-600 hover:text-white rounded-full text-xs font-semibold tracking-wider transition-all duration-300 shadow-sm"
-                        >
-                            Log Out
-                        </button>
-                    </div>
-                </div>
-
                 {/* ── Analytics Block ── */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                     <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
                         <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total Inquiries</p>
                         <h3 className="text-4xl font-serif text-slate-900">{totalLeads}</h3>
-                        <p className="text-[10px] text-emerald-600 mt-2">↑ 100% organic growth</p>
+                        <p className="text-[10px] text-emerald-600 mt-2">+ 100% organic growth</p>
                     </div>
 
                     <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
@@ -1425,6 +1390,6 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </section>
+        </CrmLayout>
     );
 }

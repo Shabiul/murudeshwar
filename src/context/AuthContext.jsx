@@ -5,6 +5,7 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
+    const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const formatUser = (supabaseUser) => {
@@ -20,20 +21,92 @@ export function AuthProvider({ children }) {
         };
     };
 
+    const fetchProfile = async (userId) => {
+        if (!userId) return null;
+        try {
+            // First check admins
+            const { data: adminData } = await supabase
+                .from('admins')
+                .select('*')
+                .eq('id', userId)
+                .maybeSingle();
+
+            if (adminData) {
+                return { ...adminData, role: 'admin' };
+            }
+
+            // Then check staff
+            const { data: staffData } = await supabase
+                .from('staff')
+                .select('*')
+                .eq('id', userId)
+                .maybeSingle();
+
+            if (staffData) {
+                return { ...staffData, role: 'staff' };
+            }
+        } catch (err) {
+            console.error('Error fetching user profile:', err);
+        }
+        return null;
+    };
+
+    const refreshProfile = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+            const prof = await fetchProfile(session.user.id);
+            setProfile(prof);
+        }
+    };
+
     useEffect(() => {
-        // Check active session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(formatUser(session?.user));
-            setLoading(false);
+        let isMounted = true;
+
+        const getSessionAndProfile = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user) {
+                const formatted = formatUser(session.user);
+                const prof = await fetchProfile(session.user.id);
+                if (isMounted) {
+                    setUser(formatted);
+                    setProfile(prof);
+                }
+            } else {
+                if (isMounted) {
+                    setUser(null);
+                    setProfile(null);
+                }
+            }
+            if (isMounted) {
+                setLoading(false);
+            }
+        };
+
+        getSessionAndProfile();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+            if (session?.user) {
+                const formatted = formatUser(session.user);
+                const prof = await fetchProfile(session.user.id);
+                if (isMounted) {
+                    setUser(formatted);
+                    setProfile(prof);
+                }
+            } else {
+                if (isMounted) {
+                    setUser(null);
+                    setProfile(null);
+                }
+            }
+            if (isMounted) {
+                setLoading(false);
+            }
         });
 
-        // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(formatUser(session?.user));
-            setLoading(false);
-        });
-
-        return () => subscription.unsubscribe();
+        return () => {
+            isMounted = false;
+            subscription.unsubscribe();
+        };
     }, []);
 
     const loginUser = async (email, password) => {
@@ -45,13 +118,14 @@ export function AuthProvider({ children }) {
         return formatUser(data.user);
     };
 
-    const signUpUser = async (email, password) => {
+    const signUpUser = async (email, password, role = 'admin') => {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: {
-                    full_name: 'Naaz Admin'
+                    full_name: role === 'admin' ? 'Naaz Admin' : 'Staff Member',
+                    role: role
                 }
             }
         });
@@ -62,10 +136,25 @@ export function AuthProvider({ children }) {
     const logout = async () => {
         await supabase.auth.signOut();
         setUser(null);
+        setProfile(null);
     };
 
+    const isAdmin = profile?.role === 'admin' || user?.email?.includes('admin') || user?.email === 'admin@murudeshwara.com';
+    const isStaff = profile?.role === 'staff';
+
     return (
-        <AuthContext.Provider value={{ user, loading, loginUser, signUpUser, logout, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            profile, 
+            loading, 
+            loginUser, 
+            signUpUser, 
+            logout, 
+            isAuthenticated: !!user,
+            isAdmin,
+            isStaff,
+            refreshProfile
+        }}>
             {!loading && children}
         </AuthContext.Provider>
     );
@@ -78,3 +167,4 @@ export function useAuth() {
     }
     return context;
 }
+

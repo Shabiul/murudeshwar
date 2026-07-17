@@ -21,6 +21,12 @@ import BeachFrontStayPage from './components/BeachFrontStayPage';
 import RoomDetailPage from './components/RoomDetailPage';
 import LoginPage from './components/LoginPage';
 import CrmDashboard from './components/CrmDashboard';
+import CrmOverview from './components/crm/CrmOverview';
+import CrmProtectedRoute from './components/crm/CrmProtectedRoute';
+import StaffManagementPage from './components/StaffManagementPage';
+import CreateStaffPage from './components/CreateStaffPage';
+import StaffDetailPage from './components/StaffDetailPage';
+import LeadDetailPage from './components/LeadDetailPage';
 import { AuthProvider } from './context/AuthContext';
 
 function ScrollToTop() {
@@ -29,6 +35,18 @@ function ScrollToTop() {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
+}
+
+function ConditionalShell({ children }) {
+  const { pathname } = useLocation();
+  const isCrm = pathname.startsWith('/crm') || pathname === '/login';
+  return (
+    <>
+      {!isCrm && <Header />}
+      {children}
+      {!isCrm && <Footer />}
+    </>
+  );
 }
 
 const initialMockLeads = [
@@ -198,9 +216,8 @@ function App() {
       <ReactLenis root options={lenisOptions}>
         <Router>
           <div className="bg-[#faf9f7] min-h-screen text-stone-900 selection:bg-brand-gold selection:text-white font-sans">
-            <Header />
             <ScrollToTop />
-
+            <ConditionalShell>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
@@ -284,10 +301,49 @@ function App() {
               } />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/crm" element={<CrmDashboard />} />
+              <Route path="/crm" element={
+                <CrmProtectedRoute>
+                  <CrmOverview />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/login" element={<LoginPage />} />
+              <Route path="/crm/bookings" element={
+                <CrmProtectedRoute>
+                  <CrmDashboard />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/bookings/:id" element={
+                <CrmProtectedRoute>
+                  <LeadDetailPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/leads/:id" element={
+                <CrmProtectedRoute>
+                  <LeadDetailPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/staff" element={
+                <CrmProtectedRoute adminOnly>
+                  <StaffManagementPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/staff/new" element={
+                <CrmProtectedRoute adminOnly>
+                  <CreateStaffPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/create-staff" element={
+                <CrmProtectedRoute adminOnly>
+                  <CreateStaffPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/staff/:id" element={
+                <CrmProtectedRoute adminOnly>
+                  <StaffDetailPage />
+                </CrmProtectedRoute>
+              } />
             </Routes>
-
-            <Footer />
+            </ConditionalShell>
           </div>
         </Router>
       </ReactLenis>
