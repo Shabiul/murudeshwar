@@ -27,6 +27,20 @@ import StaffManagementPage from './components/StaffManagementPage';
 import CreateStaffPage from './components/CreateStaffPage';
 import StaffDetailPage from './components/StaffDetailPage';
 import LeadDetailPage from './components/LeadDetailPage';
+import RoomManagementPage from './components/RoomManagementPage';
+import HousekeepingPage from './components/HousekeepingPage';
+import MaintenancePage from './components/MaintenancePage';
+import TaskManagerPage from './components/TaskManagerPage';
+import CustomerProfilePage from './components/CustomerProfilePage';
+import RoomDetailsPage from './components/RoomDetailsPage';
+import RoomCalendarPage from './components/RoomCalendarPage';
+import LostFoundPage from './components/LostFoundPage';
+import NotificationsPage from './components/NotificationsPage';
+import ReportsPage from './components/ReportsPage';
+import InventoryPage from './components/InventoryPage';
+import DocumentsPage from './components/DocumentsPage';
+import CommunicationPage from './components/crm/CommunicationPage';
+import { SmoothCursor } from './components/ui/SmoothCursor';
 import { AuthProvider } from './context/AuthContext';
 
 function ScrollToTop() {
@@ -213,6 +227,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <SmoothCursor />
       <ReactLenis root options={lenisOptions}>
         <Router>
           <div className="bg-[#faf9f7] min-h-screen text-stone-900 selection:bg-brand-gold selection:text-white font-sans">
@@ -340,6 +355,71 @@ function App() {
               <Route path="/crm/staff/:id" element={
                 <CrmProtectedRoute adminOnly>
                   <StaffDetailPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/rooms" element={
+                <CrmProtectedRoute>
+                  <RoomManagementPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/housekeeping" element={
+                <CrmProtectedRoute>
+                  <HousekeepingPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/maintenance" element={
+                <CrmProtectedRoute>
+                  <MaintenancePage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/tasks" element={
+                <CrmProtectedRoute>
+                  <TaskManagerPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/customers" element={
+                <CrmProtectedRoute>
+                  <CustomerProfilePage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/rooms/:roomId" element={
+                <CrmProtectedRoute>
+                  <RoomDetailsPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/room-calendar" element={
+                <CrmProtectedRoute>
+                  <RoomCalendarPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/lost-found" element={
+                <CrmProtectedRoute>
+                  <LostFoundPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/notifications" element={
+                <CrmProtectedRoute>
+                  <NotificationsPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/reports" element={
+                <CrmProtectedRoute>
+                  <ReportsPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/inventory" element={
+                <CrmProtectedRoute>
+                  <InventoryPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/documents" element={
+                <CrmProtectedRoute>
+                  <DocumentsPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/communications" element={
+                <CrmProtectedRoute>
+                  <CommunicationPage />
                 </CrmProtectedRoute>
               } />
             </Routes>

@@ -4,10 +4,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../utils/supabaseClient';
 import CrmLayout from './crm/CrmLayout';
+import ForecastWidgets from './crm/ForecastWidgets';
+import RecommendationCards from './crm/RecommendationCards';
 
 export default function CrmDashboard() {
     const { user, logout, isAuthenticated } = useAuth();
     const navigate = useNavigate();
+
+    const [selectedPropertyId, setSelectedPropertyId] = useState(() => {
+        return localStorage.getItem('crm_selected_property_id') || 'all';
+    });
 
     const [leads, setLeads] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -15,6 +21,15 @@ export default function CrmDashboard() {
     const [selectedTab, setSelectedTab] = useState('stays'); // 'stays' | 'scuba' | 'bikes' | 'contacts'
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all'); // 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled'
+
+    useEffect(() => {
+        const handleScopeChange = () => {
+            const propId = localStorage.getItem('crm_selected_property_id') || 'all';
+            setSelectedPropertyId(propId);
+        };
+        window.addEventListener('crmPropertyScopeChanged', handleScopeChange);
+        return () => window.removeEventListener('crmPropertyScopeChanged', handleScopeChange);
+    }, []);
     
     // Notes inline edit states
     const [editingNotesId, setEditingNotesId] = useState(null);
@@ -90,10 +105,16 @@ export default function CrmDashboard() {
         setLoading(true);
         setDbError(null);
         try {
-            const { data, error } = await supabase
+            let query = supabase
                 .from('leads')
                 .select('*')
                 .order('created_at', { ascending: false });
+
+            if (selectedPropertyId && selectedPropertyId !== 'all') {
+                query = query.eq('property_id', selectedPropertyId);
+            }
+
+            const { data, error } = await query;
 
             if (error) throw error;
             if (data) setLeads(data.map(mapFromDb));
@@ -124,7 +145,7 @@ export default function CrmDashboard() {
         if (isAuthenticated) {
             fetchLeads();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, selectedPropertyId]);
 
     // Image upload handler
     const handleImageUpload = async (file, isEdit = false) => {
@@ -228,7 +249,8 @@ export default function CrmDashboard() {
                 service_type: newLeadData.serviceType,
                 status: newLeadData.status,
                 admin_notes: newLeadData.adminNotes || null,
-                details: newLeadData.details
+                details: newLeadData.details,
+                property_id: selectedPropertyId === 'all' ? '00000000-0000-0000-0000-000000000001' : selectedPropertyId
             }]);
 
             if (error) throw error;
@@ -457,6 +479,33 @@ export default function CrmDashboard() {
             return sum;
         }, 0);
 
+    // Active booking conflicts detection
+    const activeConflicts = leads.filter((lead, index) => {
+        if (lead.serviceType !== 'Stay' || lead.status !== 'confirmed') return false;
+        return leads.some((other, oIdx) => 
+            oIdx !== index &&
+            other.serviceType === 'Stay' &&
+            other.status === 'confirmed' &&
+            other.details?.roomTitle?.toLowerCase() === lead.details?.roomTitle?.toLowerCase() &&
+            other.details?.dates?.toLowerCase() === lead.details?.dates?.toLowerCase()
+        );
+    });
+
+    const hasCreateConflict = createForm.serviceType === 'Stay' && leads.some(l =>
+        l.serviceType === 'Stay' &&
+        l.status === 'confirmed' &&
+        l.details?.roomTitle?.toLowerCase() === createForm.roomTitle?.toLowerCase() &&
+        l.details?.dates?.toLowerCase() === createForm.dates?.toLowerCase()
+    );
+
+    const hasEditConflict = editForm.serviceType === 'Stay' && leads.some(l =>
+        l.id !== editForm.id &&
+        l.serviceType === 'Stay' &&
+        l.status === 'confirmed' &&
+        l.details?.roomTitle?.toLowerCase() === editForm.details?.roomTitle?.toLowerCase() &&
+        l.details?.dates?.toLowerCase() === editForm.details?.dates?.toLowerCase()
+    );
+
     return (
         <CrmLayout title="Bookings & Leads" subtitle="Manage stays reservations, scuba diving bookings, bike rentals, and contact leads">
             <div className="relative font-sans">
@@ -530,22 +579,23 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                         <p className="text-[10px] text-slate-500 mt-2">From confirmed/completed bookings</p>
                     </div>
 
-                    <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                    <div className={`border rounded-3xl p-6 shadow-sm flex flex-col justify-between transition-colors ${activeConflicts.length > 0 ? 'bg-rose-50 border-rose-200' : 'bg-white border-slate-200/80'}`}>
                         <div>
-                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Status Mix</p>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                <span className="text-[9px] px-2 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700 font-medium">
-                                    {pendingLeads} Pending
-                                </span>
-                                <span className="text-[9px] px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-700 font-medium">
-                                    {confirmedLeads} Confirmed
-                                </span>
-                                <span className="text-[9px] px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-700 font-medium">
-                                    {totalLeads - pendingLeads - confirmedLeads} Other
-                                </span>
-                            </div>
+                            <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${activeConflicts.length > 0 ? 'text-rose-600' : 'text-slate-400'}`}>Booking Conflicts</p>
+                            <h3 className={`text-4xl font-serif ${activeConflicts.length > 0 ? 'text-rose-700' : 'text-slate-900'}`}>
+                                {activeConflicts.length}
+                            </h3>
+                            <p className="text-[10px] text-slate-500 mt-2">
+                                {activeConflicts.length > 0 ? '⚠️ Double bookings detected for stays' : '✅ All room slots clear'}
+                            </p>
                         </div>
                     </div>
+                </div>
+
+                {/* ── AI Insights & Predictions Block ── */}
+                <div className="flex flex-col gap-8 mb-8">
+                    <ForecastWidgets propertyId={selectedPropertyId} />
+                    <RecommendationCards propertyId={selectedPropertyId} />
                 </div>
 
                 {/* ── Filters, Controls & Create Button Bar ── */}
@@ -950,6 +1000,11 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                                                     placeholder="e.g. 15 Aug - 20 Aug 2026"
                                                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-800 text-xs focus:outline-none focus:border-amber-400"
                                                 />
+                                                {hasCreateConflict && (
+                                                    <p className="text-[10px] text-rose-500 font-medium mt-1">
+                                                        ⚠️ Double Booking Conflict: This room is already booked on these dates!
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     )}
@@ -1210,6 +1265,11 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                                                     }))}
                                                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-800 text-xs focus:outline-none focus:border-amber-400"
                                                 />
+                                                {hasEditConflict && (
+                                                    <p className="text-[10px] text-rose-500 font-medium mt-1">
+                                                        ⚠️ Double Booking Conflict: This room is already booked on these dates!
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     )}
