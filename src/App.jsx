@@ -40,7 +40,6 @@ import ReportsPage from './components/ReportsPage';
 import InventoryPage from './components/InventoryPage';
 import DocumentsPage from './components/DocumentsPage';
 import CommunicationPage from './components/crm/CommunicationPage';
-import { SmoothCursor } from './components/ui/SmoothCursor';
 import { AuthProvider } from './context/AuthContext';
 
 function ScrollToTop() {
@@ -227,7 +226,6 @@ function App() {
 
   return (
     <AuthProvider>
-      <SmoothCursor />
       <ReactLenis root options={lenisOptions}>
         <Router>
           <div className="bg-[#faf9f7] min-h-screen text-stone-900 selection:bg-brand-gold selection:text-white font-sans">

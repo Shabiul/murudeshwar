@@ -97,12 +97,14 @@ export default function Header() {
                             scrolled ? 'text-base md:text-lg' : 'text-xl'
                         )}
                     >
-                        <div className={classNames(
-                            'rounded-full flex items-center justify-center font-serif italic bg-stone-900 text-white group-hover:bg-brand-gold transition-all duration-300',
-                            scrolled ? 'w-6 h-6 text-sm' : 'w-8 h-8 text-lg'
-                        )}>
-                            M
-                        </div>
+                        <img
+                            src="/videos/Gemini_Generated_Image_zh1fg9zh1fg9zh1f-removebg-preview.png"
+                            alt="Murudeshwara Logo"
+                            className={classNames(
+                                'object-contain transition-all duration-300',
+                                scrolled ? 'w-6 h-6' : 'w-8 h-8'
+                            )}
+                        />
                         <span>MURUDESHWARA</span>
                     </Link>
 
