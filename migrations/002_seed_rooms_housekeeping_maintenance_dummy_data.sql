@@ -16,54 +16,63 @@ ON CONFLICT (room_number) DO UPDATE SET
     amenities = EXCLUDED.amenities,
     notes = EXCLUDED.notes;
 
--- 2. Seed public.staff table
-INSERT INTO public.staff (full_name, email, phone, role, status) VALUES
-('Ramesh Kumar', 'ramesh.kumar@murudeshwara.com', '+91 99001 22334', 'housekeeping', 'active'),
-('Anita Devi', 'anita.devi@murudeshwara.com', '+91 99002 33445', 'housekeeping', 'active'),
-('Sunita Gowda', 'sunita.gowda@murudeshwara.com', '+91 99003 44556', 'housekeeping', 'active'),
-('Vijay Naik', 'vijay.naik@murudeshwara.com', '+91 99004 55667', 'maintenance', 'active'),
-('Suresh Kumar', 'suresh.kumar@murudeshwara.com', '+91 99005 66778', 'maintenance', 'active')
+-- 2. Seed auth.users first to satisfy foreign key constraints
+INSERT INTO auth.users (id, email, raw_user_meta_data, raw_app_meta_data, aud, role) VALUES
+('00000000-0000-0000-0000-000000000001', 'ramesh.kumar@murudeshwara.com', '{"full_name": "Ramesh Kumar"}', '{"provider": "email", "providers": ["email"]}', 'authenticated', 'authenticated'),
+('00000000-0000-0000-0000-000000000002', 'anita.devi@murudeshwara.com', '{"full_name": "Anita Devi"}', '{"provider": "email", "providers": ["email"]}', 'authenticated', 'authenticated'),
+('00000000-0000-0000-0000-000000000003', 'sunita.gowda@murudeshwara.com', '{"full_name": "Sunita Gowda"}', '{"provider": "email", "providers": ["email"]}', 'authenticated', 'authenticated'),
+('00000000-0000-0000-0000-000000000004', 'vijay.naik@murudeshwara.com', '{"full_name": "Vijay Naik"}', '{"provider": "email", "providers": ["email"]}', 'authenticated', 'authenticated'),
+('00000000-0000-0000-0000-000000000005', 'suresh.kumar@murudeshwara.com', '{"full_name": "Suresh Kumar"}', '{"provider": "email", "providers": ["email"]}', 'authenticated', 'authenticated')
+ON CONFLICT (id) DO NOTHING;
+
+-- 3. Seed public.staff table using correct columns (categories, is_active)
+INSERT INTO public.staff (id, email, full_name, phone, categories, is_active) VALUES
+('00000000-0000-0000-0000-000000000001', 'ramesh.kumar@murudeshwara.com', 'Ramesh Kumar', '+91 99001 22334', ARRAY['Stay', 'Contact'], true),
+('00000000-0000-0000-0000-000000000002', 'anita.devi@murudeshwara.com', 'Anita Devi', '+91 99002 33445', ARRAY['Stay'], true),
+('00000000-0000-0000-0000-000000000003', 'sunita.gowda@murudeshwara.com', 'Sunita Gowda', '+91 99003 44556', ARRAY['Stay'], true),
+('00000000-0000-0000-0000-000000000004', 'vijay.naik@murudeshwara.com', 'Vijay Naik', '+91 99004 55667', ARRAY['Stay'], true),
+('00000000-0000-0000-0000-000000000005', 'suresh.kumar@murudeshwara.com', 'Suresh Kumar', '+91 99005 66778', ARRAY['Stay'], true)
 ON CONFLICT (email) DO UPDATE SET
     full_name = EXCLUDED.full_name,
     phone = EXCLUDED.phone,
-    role = EXCLUDED.role,
-    status = EXCLUDED.status;
+    categories = EXCLUDED.categories,
+    is_active = EXCLUDED.is_active;
 
--- 3. Seed public.housekeeping_tasks table
+-- 4. Seed public.housekeeping_tasks table
 -- Clear existing to avoid duplicate tasks on rerun
 DELETE FROM public.housekeeping_tasks;
 
 INSERT INTO public.housekeeping_tasks (room_id, assigned_staff_id, status, priority, notes) VALUES
 (
     (SELECT id FROM public.rooms WHERE room_number = '101' LIMIT 1),
-    (SELECT id FROM public.staff WHERE email = 'ramesh.kumar@murudeshwara.com' LIMIT 1),
+    '00000000-0000-0000-0000-000000000001',
     'Pending',
     'Medium',
     'Guests checkout at 11 AM'
 ),
 (
     (SELECT id FROM public.rooms WHERE room_number = '102' LIMIT 1),
-    (SELECT id FROM public.staff WHERE email = 'anita.devi@murudeshwara.com' LIMIT 1),
+    '00000000-0000-0000-0000-000000000002',
     'In Progress',
     'High',
     'VIP Room checkin today'
 ),
 (
     (SELECT id FROM public.rooms WHERE room_number = '201' LIMIT 1),
-    (SELECT id FROM public.staff WHERE email = 'sunita.gowda@murudeshwara.com' LIMIT 1),
+    '00000000-0000-0000-0000-000000000003',
     'Completed',
     'Low',
     'General cleaning complete'
 );
 
--- 4. Seed public.maintenance_requests table
+-- 5. Seed public.maintenance_requests table
 -- Clear existing to avoid duplicate requests on rerun
 DELETE FROM public.maintenance_requests;
 
 INSERT INTO public.maintenance_requests (room_id, assigned_staff_id, category, priority, status, description, resolution_notes) VALUES
 (
     (SELECT id FROM public.rooms WHERE room_number = '202' LIMIT 1),
-    (SELECT id FROM public.staff WHERE email = 'vijay.naik@murudeshwara.com' LIMIT 1),
+    '00000000-0000-0000-0000-000000000004',
     'AC',
     'High',
     'Reported',
@@ -72,7 +81,7 @@ INSERT INTO public.maintenance_requests (room_id, assigned_staff_id, category, p
 ),
 (
     (SELECT id FROM public.rooms WHERE room_number = '201' LIMIT 1),
-    (SELECT id FROM public.staff WHERE email = 'suresh.kumar@murudeshwara.com' LIMIT 1),
+    '00000000-0000-0000-0000-000000000005',
     'Plumbing',
     'Emergency',
     'Working',
@@ -81,7 +90,7 @@ INSERT INTO public.maintenance_requests (room_id, assigned_staff_id, category, p
 ),
 (
     (SELECT id FROM public.rooms WHERE room_number = '101' LIMIT 1),
-    (SELECT id FROM public.staff WHERE email = 'vijay.naik@murudeshwara.com' LIMIT 1),
+    '00000000-0000-0000-0000-000000000004',
     'Electrical',
     'Low',
     'Completed',
@@ -89,7 +98,7 @@ INSERT INTO public.maintenance_requests (room_id, assigned_staff_id, category, p
     'Replaced standard yellow bulb with warm white LED bulb.'
 );
 
--- 5. Seed public.lost_found_items table
+-- 6. Seed public.lost_found_items table
 -- Clear existing to avoid duplicate records
 DELETE FROM public.lost_found_items;
 
@@ -98,7 +107,7 @@ INSERT INTO public.lost_found_items (item_name, found_by, found_location, claime
 ('iPhone 15 Pro Max', 'Subhash Rao', 'Beachside Restaurant', 'Claimed', 'John Doe', '+91 98765 43210'),
 ('Scuba Diving Fins', 'Manjunath Hegde', 'Scuba Diving Deck', 'Unclaimed', NULL, NULL);
 
--- 6. Seed public.inventory_items table
+-- 7. Seed public.inventory_items table
 -- Clear existing to avoid duplicate records
 DELETE FROM public.inventory_items;
 
