@@ -58,7 +58,7 @@ export default function HousekeepingPage() {
       const roomsRes = await supabase.from('rooms').select('id, room_number');
       const staffRes = await supabase.from('staff').select('id, full_name');
       const housekeepingRes = await supabase.from('housekeeping_tasks').select('*, room:rooms(room_number), assigned_staff:staff(full_name)');
-      const lfRes = await supabase.from('lost_and_found').select('*').order('created_at', { ascending: false });
+      const lfRes = await supabase.from('lost_found_items').select('*').order('created_at', { ascending: false });
 
       if (roomsRes.error || staffRes.error || housekeepingRes.error) {
         throw new Error('Supabase tables not configured.');
@@ -204,7 +204,7 @@ export default function HousekeepingPage() {
     }
 
     try {
-      const { error } = await supabase.from('lost_and_found').insert([payload]);
+      const { error } = await supabase.from('lost_found_items').insert([payload]);
       if (error) throw error;
       setIsLfModalOpen(false);
       fetchData();

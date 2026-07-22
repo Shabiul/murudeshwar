@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../utils/supabaseClient';
 import CrmLayout from './crm/CrmLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,7 +12,9 @@ const MOCK_INVENTORY = [
 ];
 
 export default function InventoryPage() {
-  const [items, setItems] = useState(MOCK_INVENTORY);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isDemo, setIsDemo] = useState(false);
   const [activeTab, setActiveTab] = useState('All'); // All, Scuba, Housekeeping, Restaurant, Rentals
   
   // Modal State
@@ -23,33 +26,115 @@ export default function InventoryPage() {
   const [unit, setUnit] = useState('pcs');
   const [location, setLocation] = useState('');
 
-  const handleAdjustStock = (itemId, amount) => {
-    setItems(items.map(item => {
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+  async function fetchInventory() {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('inventory_items')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+
+      // Map DB categories back to UI categories
+      const mapped = (data || []).map(item => {
+        let cat = 'Housekeeping';
+        if (item.category === 'Scuba Equipment') cat = 'Scuba';
+        if (item.category === 'Restaurant Stock') cat = 'Restaurant';
+        if (item.category === 'Rental Equipment') cat = 'Rentals';
+        return {
+          id: item.id,
+          name: item.name,
+          category: cat,
+          stock: item.quantity,
+          min_stock: item.min_threshold,
+          unit: item.unit,
+          location: 'Central Store'
+        };
+      });
+
+      setItems(mapped);
+      setIsDemo(false);
+    } catch (err) {
+      console.warn('Inventory table not ready. Using demo simulation.', err.message);
+      setItems(MOCK_INVENTORY);
+      setIsDemo(true);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleAdjustStock = async (itemId, amount) => {
+    const updated = items.map(item => {
       if (item.id === itemId) {
         const newStock = Math.max(0, item.stock + amount);
         return { ...item, stock: newStock };
       }
       return item;
-    }));
+    });
+    setItems(updated);
+
+    if (isDemo) return;
+
+    try {
+      const targetItem = updated.find(i => i.id === itemId);
+      const { error } = await supabase
+        .from('inventory_items')
+        .update({ quantity: targetItem.stock })
+        .eq('id', itemId);
+      if (error) throw error;
+    } catch (err) {
+      console.error('Error adjusting stock in DB:', err.message);
+    }
   };
 
-  const handleAddItem = (e) => {
+  const handleAddItem = async (e) => {
     e.preventDefault();
     if (!name || !stock) return;
 
-    const newItem = {
-      id: Date.now().toString(),
+    let dbCat = 'Room Amenities';
+    if (category === 'Scuba') dbCat = 'Scuba Equipment';
+    if (category === 'Restaurant') dbCat = 'Restaurant Stock';
+    if (category === 'Rentals') dbCat = 'Rental Equipment';
+    if (category === 'Housekeeping') dbCat = 'Cleaning Supplies';
+
+    const payload = {
       name,
-      category,
-      stock: parseInt(stock, 10),
-      min_stock: parseInt(minStock, 10) || 0,
+      category: dbCat,
+      quantity: parseInt(stock, 10),
       unit,
-      location: location || 'Central Store'
+      min_threshold: parseInt(minStock, 10) || 5
     };
 
-    setItems([newItem, ...items]);
-    setIsModalOpen(false);
-    resetForm();
+    if (isDemo) {
+      const newItem = {
+        id: Date.now().toString(),
+        name,
+        category,
+        stock: payload.quantity,
+        min_stock: payload.min_threshold,
+        unit,
+        location: location || 'Central Store'
+      };
+      setItems([newItem, ...items]);
+      setIsModalOpen(false);
+      resetForm();
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('inventory_items').insert([payload]);
+      if (error) throw error;
+      setIsModalOpen(false);
+      resetForm();
+      fetchInventory();
+    } catch (err) {
+      alert('Error adding inventory item: ' + err.message);
+    }
   };
 
   const resetForm = () => {
@@ -62,6 +147,16 @@ export default function InventoryPage() {
   };
 
   const filteredItems = items.filter(item => activeTab === 'All' || item.category === activeTab);
+
+  if (loading) {
+    return (
+      <CrmLayout title="Resort Inventory Registry" subtitle="Manage supplies, diving regulators, hospitality kits, and restaurant ingredients.">
+        <div className="flex items-center justify-center min-h-[300px]">
+          <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-stone-900 border-t-transparent" />
+        </div>
+      </CrmLayout>
+    );
+  }
 
   return (
     <CrmLayout title="Resort Inventory Registry" subtitle="Manage supplies, diving regulators, hospitality kits, and restaurant ingredients.">
@@ -141,20 +236,22 @@ export default function InventoryPage() {
         })}
       </div>
 
-      {/* Add Item Modal */}
+      {/* Add Stock Item Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 bg-stone-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className="bg-white dark:bg-stone-900 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-stone-200 dark:border-stone-800"
             >
-              <div className="px-6 py-4 border-b border-stone-100 dark:border-stone-850 flex justify-between items-center bg-stone-50 dark:bg-stone-850">
-                <h2 className="font-serif text-lg text-stone-900 dark:text-stone-50">Register Supply Stock</h2>
+              <div className="px-6 py-4 border-b border-stone-100 dark:border-stone-800 flex justify-between items-center bg-stone-50 dark:bg-stone-850">
+                <h2 className="font-serif text-lg text-stone-900 dark:text-stone-50">Add Stock Item</h2>
                 <button onClick={() => setIsModalOpen(false)} className="text-stone-400 hover:text-stone-600">
-                  &times;
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
 
@@ -166,18 +263,18 @@ export default function InventoryPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-250 rounded-xl px-3 py-2.5 focus:outline-none"
                     placeholder="e.g. Toiletries Kit"
-                    className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-200 rounded-xl px-3 py-2 focus:outline-none"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Category *</label>
+                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Category</label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
-                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-200 rounded-xl px-3 py-2 focus:outline-none"
+                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-250 rounded-xl px-3 py-2.5 focus:outline-none"
                     >
                       <option value="Housekeeping">Housekeeping</option>
                       <option value="Scuba">Scuba</option>
@@ -187,40 +284,41 @@ export default function InventoryPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Measurement Unit</label>
+                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Unit</label>
                     <input
                       type="text"
                       required
                       value={unit}
                       onChange={(e) => setUnit(e.target.value)}
-                      placeholder="e.g. pcs, kits, liters"
-                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-200 rounded-xl px-3 py-2"
+                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-250 rounded-xl px-3 py-2.5 focus:outline-none"
+                      placeholder="pcs, cans, kits..."
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Starting Stock *</label>
+                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Initial Stock *</label>
                     <input
                       type="number"
                       required
+                      min="0"
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
+                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-250 rounded-xl px-3 py-2.5 focus:outline-none"
                       placeholder="e.g. 50"
-                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-200 rounded-xl px-3 py-2"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Min Level Alert</label>
+                    <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Min Threshold</label>
                     <input
                       type="number"
-                      required
+                      min="0"
                       value={minStock}
                       onChange={(e) => setMinStock(e.target.value)}
+                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-250 rounded-xl px-3 py-2.5 focus:outline-none"
                       placeholder="e.g. 10"
-                      className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-200 rounded-xl px-3 py-2"
                     />
                   </div>
                 </div>
@@ -231,26 +329,17 @@ export default function InventoryPage() {
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="e.g. Main HK closet"
-                    className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-200 rounded-xl px-3 py-2"
+                    className="w-full text-sm border border-stone-200 dark:border-stone-750 bg-transparent text-stone-800 dark:text-stone-250 rounded-xl px-3 py-2.5 focus:outline-none"
+                    placeholder="e.g. HK Closet A"
                   />
                 </div>
 
-                <div className="pt-4 flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 text-xs font-semibold rounded-xl"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-semibold rounded-xl"
-                  >
-                    Log Item
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-stone-800 transition-colors mt-4"
+                >
+                  Save Stock Item
+                </button>
               </form>
             </motion.div>
           </div>
