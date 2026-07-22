@@ -22,6 +22,15 @@ const OPERATIONS_NAV = [
   { path: '/crm/documents', label: 'Documents Vault', icon: 'M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8' },
 ];
 
+const RENTAL_NAV = [
+  { path: '/crm/bikes/inventory', label: 'Bike Fleet', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+  { path: '/crm/bikes/bookings', label: 'Bike Reservations', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+  { path: '/crm/cars/inventory', label: 'Car Fleet', icon: 'M8 17a2 2 0 100 4 2 2 0 000-4zm8 0a2 2 0 100 4 2 2 0 000-4zM3 9l2-4h10l2 4M3 9h18v7a2 2 0 01-2 2H5a2 2 0 01-2-2V9z' },
+  { path: '/crm/cars/bookings', label: 'Car & Chauffeur Trips', icon: 'M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1' },
+  { path: '/crm/drivers', label: 'Chauffeur Drivers', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
+  { path: '/crm/rentals/maintenance', label: 'Vehicle Damage Audit', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' }
+];
+
 const ANALYTICS_NAV = [
   { path: '/crm/notifications', label: 'Notification Center', icon: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9' },
   { path: '/crm/reports', label: 'Analytics Reports', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z' },
@@ -139,6 +148,25 @@ export default function CrmLayout({ children, title, subtitle }) {
             <p className="px-4 text-[9px] uppercase tracking-widest text-stone-500 font-bold">Resort Operations</p>
           </div>
           {OPERATIONS_NAV.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={classNames(
+                'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+                isActive(item.path)
+                  ? 'bg-brand-gold text-stone-900 shadow-lg shadow-brand-gold/20'
+                  : 'text-stone-300 hover:bg-white/10 hover:text-white'
+              )}
+            >
+              <NavIcon d={item.icon} />
+              {item.label}
+            </Link>
+          ))}
+
+          <div className="pt-3 pb-1">
+            <p className="px-4 text-[9px] uppercase tracking-widest text-stone-500 font-bold">Vehicle Fleet & Rentals</p>
+          </div>
+          {RENTAL_NAV.map((item) => (
             <Link
               key={item.path}
               to={item.path}

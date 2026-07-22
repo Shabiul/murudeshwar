@@ -3,7 +3,7 @@ export const services = [
     title: "Scuba Diving",
     description: "Discover the underwater world with our certified PADI courses and guided dives. We offer everything from beginner experiences to professional-level training.",
     image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2670&auto=format&fit=crop",
-    dark: false,
+    dark: true,
     link: "/courses",
     courses: [
       {
@@ -31,11 +31,18 @@ export const services = [
     link: "/beach-front-stay"
   },
   {
-    title: "Bike Rental Services",
-    description: "Explore the island at your own pace with our premium bike rentals. We offer mountain bikes, city cruisers, and guided tours.",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2670&auto=format&fit=crop",
-    dark: false,
+    title: "Cab Rental Services",
+    description: "Comfortable taxi & sightseeing services by Naik Tour and Travels. Local tours, outstation trips, airport transfers, and 24×7 taxi availability.",
+    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2670&auto=format&fit=crop",
+    dark: true,
     accent: true,
+    link: "/cab-rental"
+  },
+  {
+    title: "Bike Rental Services",
+    description: "Explore Murudeshwar at your own pace with our premium Royal Enfield motorbikes & scooters. We offer cruiser bikes and cruisers for every trail.",
+    image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2670&auto=format&fit=crop",
+    dark: true,
     link: "/bike-rental"
   }
 ];

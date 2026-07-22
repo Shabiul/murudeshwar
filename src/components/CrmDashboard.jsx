@@ -594,8 +594,7 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
 
                 {/* ── AI Insights & Predictions Block ── */}
                 <div className="flex flex-col gap-8 mb-8">
-                    <ForecastWidgets propertyId={selectedPropertyId} />
-                    <RecommendationCards propertyId={selectedPropertyId} />
+                    <ForecastWidgets propertyId={selectedPropertyId} leads={leads} />
                 </div>
 
                 {/* ── Filters, Controls & Create Button Bar ── */}

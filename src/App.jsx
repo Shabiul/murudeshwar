@@ -7,6 +7,8 @@ import PricingSection from './components/PricingSection';
 import Footer from './components/Footer';
 import GenericPage from './components/GenericPage';
 import ServicePage from './components/ServicePage';
+import TaxiServicePage from './components/TaxiServicePage';
+import BikeRentalServicePage from './components/BikeRentalServicePage';
 import HomePage from './components/HomePage';
 import GalleryPage from './components/GalleryPage';
 import ContactPage from './components/ContactPage';
@@ -40,6 +42,12 @@ import ReportsPage from './components/ReportsPage';
 import InventoryPage from './components/InventoryPage';
 import DocumentsPage from './components/DocumentsPage';
 import CommunicationPage from './components/crm/CommunicationPage';
+import BikeInventoryPage from './modules/bike-rental/components/BikeInventoryPage';
+import BikeBookingsPage from './modules/bike-rental/components/BikeBookingsPage';
+import CarInventoryPage from './modules/car-rental/components/CarInventoryPage';
+import CarBookingsPage from './modules/car-rental/components/CarBookingsPage';
+import DriverManagementPage from './modules/car-rental/components/DriverManagementPage';
+import MaintenanceDamagePage from './modules/car-rental/components/MaintenanceDamagePage';
 import { AuthProvider } from './context/AuthContext';
 
 function ScrollToTop() {
@@ -242,20 +250,8 @@ function App() {
               <Route path="/crew/:crewId" element={<CrewDetailPage />} />
               <Route path="/beach-front-stay" element={<BeachFrontStayPage />} />
               <Route path="/beach-front-stay/:roomId" element={<RoomDetailPage />} />
-              <Route path="/bike-rental" element={
-                <ServicePage
-                  title="Bike Rental Services"
-                  subtitle="Explore at Your Own Pace"
-                  heroImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2670&auto=format&fit=crop"
-                  description="Uncover Murudeshwar’s hidden trails, scenic viewpoints, and local heritage with our premium bike rental fleet. Whether you need a rugged mountain bike for off-road trails or a comfortable cruiser for scenic coastal roads, we provide high-performance gear to make your exploration safe, convenient, and thrilling."
-                  features={[
-                    { title: "Premium Fleet", desc: "All-terrain mountain bikes and comfortable cruisers" },
-                    { title: "Safety Gear Included", desc: "Helmets, safety locks, and high-visibility gear" },
-                    { title: "Flexible Rentals", desc: "Hourly, half-day, full-day, and multi-day packages" },
-                    { title: "Curated Route Maps", desc: "Expert tips on local trails and hidden beaches" }
-                  ]}
-                />
-              } />
+              <Route path="/cab-rental" element={<TaxiServicePage />} />
+              <Route path="/bike-rental" element={<BikeRentalServicePage />} />
               <Route path="/private-jets" element={
                 <ServicePage
                   title="Private Aviation"
@@ -418,6 +414,36 @@ function App() {
               <Route path="/crm/communications" element={
                 <CrmProtectedRoute>
                   <CommunicationPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/bikes/inventory" element={
+                <CrmProtectedRoute>
+                  <BikeInventoryPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/bikes/bookings" element={
+                <CrmProtectedRoute>
+                  <BikeBookingsPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/cars/inventory" element={
+                <CrmProtectedRoute>
+                  <CarInventoryPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/cars/bookings" element={
+                <CrmProtectedRoute>
+                  <CarBookingsPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/drivers" element={
+                <CrmProtectedRoute>
+                  <DriverManagementPage />
+                </CrmProtectedRoute>
+              } />
+              <Route path="/crm/rentals/maintenance" element={
+                <CrmProtectedRoute>
+                  <MaintenanceDamagePage />
                 </CrmProtectedRoute>
               } />
             </Routes>

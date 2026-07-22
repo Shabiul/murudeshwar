@@ -4,13 +4,14 @@ export default function Footer() {
     return (
         <footer className="relative w-full bg-stone-900 text-white pt-20 pb-8 px-6 md:px-12 border-t border-stone-800">
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 mb-16">
                     {/* SERVICES */}
                     <div>
                         <h4 className="font-sans font-bold text-[10px] tracking-[0.2em] text-white/40 mb-6 uppercase">Services</h4>
                         <ul className="space-y-3 font-sans text-sm text-white/70">
                             <li><Link to="/beach-front-stay" className="hover:text-brand-gold transition-colors">Beach-Front Stays</Link></li>
                             <li><Link to="/courses" className="hover:text-brand-gold transition-colors">Scuba Diving Courses</Link></li>
+                            <li><Link to="/cab-rental" className="hover:text-brand-gold transition-colors">Cab Rental</Link></li>
                             <li><Link to="/bike-rental" className="hover:text-brand-gold transition-colors">Bike Rental</Link></li>
                             <li><Link to="/attractions" className="hover:text-brand-gold transition-colors">Attractions</Link></li>
                         </ul>
@@ -23,16 +24,6 @@ export default function Footer() {
                             <li><Link to="/contact" className="hover:text-brand-gold transition-colors">Contact</Link></li>
                             <li><Link to="/crew" className="hover:text-brand-gold transition-colors">Our Crew</Link></li>
                             <li className="hover:text-white transition-colors cursor-pointer">Press</li>
-                        </ul>
-                    </div>
-
-                    {/* CONNECT */}
-                    <div>
-                        <h4 className="font-sans font-bold text-[10px] tracking-[0.2em] text-white/40 mb-6 uppercase">Connect</h4>
-                        <ul className="space-y-3 font-sans text-sm text-white/70">
-                            <li className="hover:text-brand-gold transition-colors cursor-pointer">Instagram</li>
-                            <li className="hover:text-brand-gold transition-colors cursor-pointer">Facebook</li>
-                            <li className="hover:text-brand-gold transition-colors cursor-pointer">YouTube</li>
                         </ul>
                     </div>
 

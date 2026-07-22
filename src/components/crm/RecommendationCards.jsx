@@ -22,13 +22,13 @@ export default function RecommendationCards({ propertyId = 'all' }) {
 
   if (loading) {
     return (
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-white">AI Recommendations</h3>
+      <div className="space-y-4 font-sans">
+        <h3 className="text-base font-serif font-bold text-stone-900 dark:text-white">AI Recommendations</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
-          <div className="h-40 bg-stone-900/50 border border-white/5 rounded-2xl"></div>
-          <div className="h-40 bg-stone-900/50 border border-white/5 rounded-2xl"></div>
-          <div className="h-40 bg-stone-900/50 border border-white/5 rounded-2xl"></div>
-          <div className="h-40 bg-stone-900/50 border border-white/5 rounded-2xl"></div>
+          <div className="h-40 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl"></div>
+          <div className="h-40 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl"></div>
+          <div className="h-40 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl"></div>
+          <div className="h-40 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl"></div>
         </div>
       </div>
     );
@@ -37,13 +37,13 @@ export default function RecommendationCards({ propertyId = 'all' }) {
   const getPriorityStyles = (priority) => {
     switch (priority) {
       case 'Emergency':
-        return 'border-rose-500/20 bg-rose-950/20 text-rose-400';
+        return 'border-rose-200 bg-rose-50/70 text-rose-900 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300';
       case 'High':
-        return 'border-amber-500/20 bg-amber-950/20 text-amber-400';
+        return 'border-amber-200 bg-amber-50/70 text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-300';
       case 'Medium':
-        return 'border-blue-500/20 bg-blue-950/20 text-blue-400';
+        return 'border-blue-200 bg-blue-50/70 text-blue-900 dark:border-blue-900/40 dark:bg-blue-950/30 dark:text-blue-300';
       default:
-        return 'border-stone-500/20 bg-stone-900/20 text-stone-400';
+        return 'border-stone-200 bg-stone-50/70 text-stone-900 dark:border-stone-800 dark:bg-stone-800/50 dark:text-stone-200';
     }
   };
 
@@ -78,35 +78,35 @@ export default function RecommendationCards({ propertyId = 'all' }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 font-sans">
       <div className="flex items-center gap-2">
         <span className="flex h-2 w-2 relative">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-gold"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
         </span>
-        <h3 className="text-base font-semibold text-white">AI Recommendations & Alerts</h3>
+        <h3 className="text-base font-serif font-bold text-stone-900 dark:text-white">AI Recommendations & Alerts</h3>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {recommendations.map((rec) => (
           <div 
             key={rec.id} 
-            className={`border rounded-2xl p-5 flex flex-col justify-between hover:scale-[1.02] hover:shadow-lg transition-all duration-300 ${getPriorityStyles(rec.priority)}`}
+            className={`border rounded-3xl p-5 flex flex-col justify-between hover:scale-[1.01] hover:shadow-md transition-all duration-300 ${getPriorityStyles(rec.priority)}`}
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="p-1.5 rounded-lg bg-white/5">
+                <span className="p-2 rounded-xl bg-white dark:bg-stone-800 shadow-xs border border-stone-200/50 dark:border-stone-700">
                   {getIcon(rec.type)}
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-white/10">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-white/80 dark:bg-stone-800/80 shadow-xs border border-stone-200/50 dark:border-stone-700">
                   {rec.priority}
                 </span>
               </div>
-              <h4 className="text-sm font-semibold text-white mb-1.5 leading-snug">{rec.title}</h4>
-              <p className="text-xs text-stone-300 leading-relaxed line-clamp-3 mb-4">{rec.message}</p>
+              <h4 className="text-sm font-serif font-bold text-stone-900 dark:text-white mb-1.5 leading-snug">{rec.title}</h4>
+              <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-3 mb-4">{rec.message}</p>
             </div>
             
-            <button className="w-full text-center text-xs font-semibold py-2 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white transition duration-200">
+            <button className="w-full text-center text-xs font-bold py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-white dark:text-stone-900 transition-colors shadow-xs">
               {rec.actionLabel}
             </button>
           </div>

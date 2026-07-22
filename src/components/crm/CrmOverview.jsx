@@ -181,6 +181,51 @@ export default function CrmOverview() {
           </div>
         </div>
       </div>
+
+      {/* Vehicle Fleet & Rentals Overview Section */}
+      <div className="mt-8 bg-white dark:bg-stone-900 rounded-2xl border border-black/5 p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4 border-b border-stone-100 dark:border-stone-800 pb-3">
+          <div>
+            <h2 className="font-serif text-lg text-stone-900 dark:text-white font-bold">Vehicle Fleet & Logistics</h2>
+            <p className="text-xs text-stone-400">Live operational status of bikes, scooters, cars, and chauffeur trips.</p>
+          </div>
+          <div className="flex gap-2">
+            <Link to="/crm/bikes/inventory" className="text-xs font-bold text-brand-gold hover:underline">
+              Bike Fleet →
+            </Link>
+            <span className="text-stone-300">|</span>
+            <Link to="/crm/cars/inventory" className="text-xs font-bold text-brand-gold hover:underline">
+              Car Fleet →
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+          <div className="p-4 bg-stone-50 dark:bg-stone-800/40 rounded-xl border border-stone-100 dark:border-stone-800">
+            <p className="text-stone-400 font-bold uppercase text-[9px] tracking-wider mb-1">Active Bike Rentals</p>
+            <p className="text-2xl font-serif font-bold text-stone-900 dark:text-white">4 Units</p>
+            <p className="text-[10px] text-emerald-600 mt-1">✓ Ka30 Scooters & RE Classic</p>
+          </div>
+
+          <div className="p-4 bg-stone-50 dark:bg-stone-800/40 rounded-xl border border-stone-100 dark:border-stone-800">
+            <p className="text-stone-400 font-bold uppercase text-[9px] tracking-wider mb-1">Car & Chauffeur Trips</p>
+            <p className="text-2xl font-serif font-bold text-indigo-600 dark:text-indigo-400">3 Active</p>
+            <p className="text-[10px] text-stone-400 mt-1">Thar 4x4 & Innova Crysta</p>
+          </div>
+
+          <div className="p-4 bg-stone-50 dark:bg-stone-800/40 rounded-xl border border-stone-100 dark:border-stone-800">
+            <p className="text-stone-400 font-bold uppercase text-[9px] tracking-wider mb-1">Fleet Availability</p>
+            <p className="text-2xl font-serif font-bold text-emerald-600">82% Available</p>
+            <p className="text-[10px] text-stone-400 mt-1">Ready for pickup</p>
+          </div>
+
+          <div className="p-4 bg-stone-50 dark:bg-stone-800/40 rounded-xl border border-stone-100 dark:border-stone-800">
+            <p className="text-stone-400 font-bold uppercase text-[9px] tracking-wider mb-1">Maintenance & Damage</p>
+            <p className="text-2xl font-serif font-bold text-rose-500">2 Alerts</p>
+            <p className="text-[10px] text-rose-600 dark:text-rose-400 mt-1">Inspection required</p>
+          </div>
+        </div>
+      </div>
     </CrmLayout>
   );
 }

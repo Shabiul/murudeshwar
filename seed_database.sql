@@ -1,67 +1,5 @@
 -- Setup SQL script for Murudeshwara Resort Database
 
--- Create admin user in auth.users schema
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
-INSERT INTO auth.users (
-  instance_id,
-  id,
-  aud,
-  role,
-  email,
-  encrypted_password,
-  email_confirmed_at,
-  recovery_sent_at,
-  last_sign_in_at,
-  raw_app_meta_data,
-  raw_user_meta_data,
-  created_at,
-  updated_at,
-  confirmation_token,
-  email_change,
-  email_change_token_new,
-  recovery_token
-) VALUES (
-  '00000000-0000-0000-0000-000000000000',
-  gen_random_uuid(),
-  'authenticated',
-  'authenticated',
-  'admin@murudeshwara.com',
-  crypt('NaazAiLabs@786345', gen_salt('bf')),
-  NOW(),
-  NULL,
-  NOW(),
-  '{"provider":"email","providers":["email"]}',
-  '{"full_name":"Naaz Admin"}',
-  NOW(),
-  NOW(),
-  '',
-  '',
-  '',
-  ''
-) ON CONFLICT (email) DO NOTHING;
-
-INSERT INTO auth.identities (
-  id,
-  user_id,
-  identity_data,
-  provider,
-  last_sign_in_at,
-  created_at,
-  updated_at
-)
-SELECT 
-  gen_random_uuid(),
-  id,
-  json_build_object('sub', id, 'email', email),
-  'email',
-  NOW(),
-  NOW(),
-  NOW()
-FROM auth.users
-WHERE email = 'admin@murudeshwara.com'
-ON CONFLICT DO NOTHING;
-
 -- Create site_content table
 CREATE TABLE IF NOT EXISTS site_content (
     key TEXT PRIMARY KEY,
@@ -1245,7 +1183,7 @@ INSERT INTO site_content (key, data) VALUES
     "title": "Scuba Diving",
     "description": "Discover the underwater world with our certified PADI courses and guided dives. We offer everything from beginner experiences to professional-level training.",
     "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2670&auto=format&fit=crop",
-    "dark": false,
+    "dark": true,
     "link": "/courses",
     "courses": [
       {
@@ -1273,11 +1211,18 @@ INSERT INTO site_content (key, data) VALUES
     "link": "/beach-front-stay"
   },
   {
-    "title": "Bike Rental Services",
-    "description": "Explore the island at your own pace with our premium bike rentals. We offer mountain bikes, city cruisers, and guided tours.",
-    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2670&auto=format&fit=crop",
-    "dark": false,
+    "title": "Cab Rental Services",
+    "description": "Comfortable taxi & sightseeing services by Naik Tour and Travels. Local tours, outstation trips, airport transfers, and 24×7 taxi availability.",
+    "image": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2670&auto=format&fit=crop",
+    "dark": true,
     "accent": true,
+    "link": "/cab-rental"
+  },
+  {
+    "title": "Bike Rental Services",
+    "description": "Explore Murudeshwar at your own pace with our premium Royal Enfield motorbikes & scooters. We offer cruiser bikes and cruisers for every trail.",
+    "image": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2670&auto=format&fit=crop",
+    "dark": true,
     "link": "/bike-rental"
   }
 ]'::jsonb),

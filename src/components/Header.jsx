@@ -50,6 +50,7 @@ export default function Header() {
             subItems: [
                 { name: 'Scuba Diving',     path: '/courses' },
                 { name: 'Beach-Front Stay', path: '/beach-front-stay' },
+                { name: 'Cab Rental',       path: '/cab-rental' },
                 { name: 'Bike Rental',      path: '/bike-rental' },
             ],
         },

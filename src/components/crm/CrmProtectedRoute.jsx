@@ -1,9 +1,31 @@
+import { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 export default function CrmProtectedRoute({ children, adminOnly = false }) {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+  const { isAuthenticated, isAdmin, loading, logout } = useAuth();
   const location = useLocation();
+
+  // Listen for browser BACK button navigation inside CRM to auto-logout and redirect to main website
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const handlePopState = async (e) => {
+      try {
+        // Await the asynchronous Supabase signOut call to ensure the session token is fully deleted
+        // from local storage before page unload redirect triggers.
+        await logout();
+      } catch (err) {
+        console.error("Auto-logout during back button navigation failed:", err);
+      }
+      window.location.href = '/';
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isAuthenticated, logout]);
 
   if (loading) {
     return (
