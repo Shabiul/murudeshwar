@@ -27,10 +27,17 @@ export default function CrmDashboard() {
             const propId = localStorage.getItem('crm_selected_property_id') || 'all';
             setSelectedPropertyId(propId);
         };
+        const handleLeadsUpdate = () => {
+            fetchLeads();
+        };
         window.addEventListener('crmPropertyScopeChanged', handleScopeChange);
-        return () => window.removeEventListener('crmPropertyScopeChanged', handleScopeChange);
+        window.addEventListener('crmLeadsUpdated', handleLeadsUpdate);
+        return () => {
+            window.removeEventListener('crmPropertyScopeChanged', handleScopeChange);
+            window.removeEventListener('crmLeadsUpdated', handleLeadsUpdate);
+        };
     }, []);
-    
+
     // Notes inline edit states
     const [editingNotesId, setEditingNotesId] = useState(null);
     const [tempNotes, setTempNotes] = useState('');
@@ -59,7 +66,7 @@ export default function CrmDashboard() {
         level: 'Beginner',
         duration: '4 Days',
         // Bike details
-        bikeType: 'Royal Enfield Bullet 350',
+        bikeType: 'Royal Enfield Hunter 350',
         bikeDuration: '3 Days',
         // Contact details
         message: '',
@@ -447,8 +454,9 @@ export default function CrmDashboard() {
     const filteredLeads = leads.filter(lead => {
         let matchTab = false;
         if (selectedTab === 'stays') matchTab = lead.serviceType === 'Stay';
-        if (selectedTab === 'scuba') matchTab = lead.serviceType === 'Scuba';
+        if (selectedTab === 'cars') matchTab = lead.serviceType === 'Car' || lead.serviceType === 'Taxi';
         if (selectedTab === 'bikes') matchTab = lead.serviceType === 'Bike';
+        if (selectedTab === 'scuba') matchTab = lead.serviceType === 'Scuba';
         if (selectedTab === 'contacts') matchTab = lead.serviceType === 'Contact';
 
         const matchStatus = statusFilter === 'all' || lead.status === statusFilter;
@@ -653,8 +661,9 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                 <div className="flex border-b border-slate-200 mb-6 overflow-x-auto scrollbar-none gap-2">
                     {[
                         { id: 'stays', label: 'Stays Booking' },
-                        { id: 'scuba', label: 'Scuba Diving' },
+                        { id: 'cars', label: 'Car Rentals' },
                         { id: 'bikes', label: 'Bike Rentals' },
+                        { id: 'scuba', label: 'Scuba Diving' },
                         { id: 'contacts', label: 'General Leads' }
                     ].map(tab => (
                         <button
@@ -723,6 +732,12 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                                                                 <p className="text-slate-500">Guests: {lead.details?.guests || '1 Guest'} | Dates: {lead.details?.dates || 'N/A'}</p>
                                                             </>
                                                         )}
+                                                        {(lead.serviceType === 'Car' || lead.serviceType === 'Taxi') && (
+                                                            <>
+                                                                <p className="font-semibold text-slate-800">{lead.details?.vehicleName || lead.details?.roomTitle || 'Car Rental'}</p>
+                                                                <p className="text-slate-500">Guests/Qty: {lead.details?.guests || '1 Vehicle'} | Dates: {lead.details?.dates || 'N/A'}</p>
+                                                            </>
+                                                        )}
                                                         {lead.serviceType === 'Scuba' && (
                                                             <>
                                                                 <p className="font-semibold text-slate-800">{lead.details?.courseName || 'Scuba Session'}</p>
@@ -731,8 +746,8 @@ CREATE POLICY "Allow public delete" ON leads FOR DELETE USING (true);`}</pre>
                                                         )}
                                                         {lead.serviceType === 'Bike' && (
                                                             <>
-                                                                <p className="font-semibold text-slate-800">{lead.details?.bikeType || 'Bike Rental'}</p>
-                                                                <p className="text-slate-500">Duration: {lead.details?.duration || 'N/A'}</p>
+                                                                <p className="font-semibold text-slate-800">{lead.details?.bikeType || lead.details?.vehicleName || lead.details?.roomTitle || 'Bike Rental'}</p>
+                                                                <p className="text-slate-500">Quantity: {lead.details?.guests || '1 Vehicle'} | Dates: {lead.details?.dates || lead.details?.duration || 'N/A'}</p>
                                                             </>
                                                         )}
                                                         {lead.serviceType === 'Contact' && (

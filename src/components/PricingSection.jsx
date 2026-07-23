@@ -14,9 +14,13 @@ export default function PricingSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[80vh]">
                     {services.map((card, idx) => {
-                        const cardImage = card.title?.toLowerCase().includes('bike')
-                            ? "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2670&auto=format&fit=crop"
-                            : card.image;
+                        const titleLower = card.title?.toLowerCase() || '';
+                        let cardImage = card.image;
+                        if (titleLower.includes('cab') || titleLower.includes('car') || titleLower.includes('taxi')) {
+                            cardImage = "/cars/Suzuki-Swift-South-Africa-May-2022.webp";
+                        } else if (titleLower.includes('bike')) {
+                            cardImage = "/bikes/2022-royal-enfield-hunter-350.webp";
+                        }
 
                         const CardContent = () => (
                             <div

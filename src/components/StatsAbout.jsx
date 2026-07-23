@@ -112,7 +112,7 @@ export default function StatsAbout() {
                         className="w-full h-full rounded-[40px] overflow-hidden border border-stone-200 shadow-2xl shadow-stone-200/60"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2673&auto=format&fit=crop"
+                            src="/Photos/image.png"
                             alt="Murudeshwara Shoreline"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
                         />

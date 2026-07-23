@@ -1,6 +1,66 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReservationForm from './ReservationForm';
+import VehicleScrollMarquee from './VehicleScrollMarquee';
+
+const CAR_FLEET = [
+  {
+    name: 'Honda City ZX',
+    category: 'Sedan',
+    image: '/cars/2022_Honda_City_ZX_i-VTEC_(India)_front_view_(cropped).jpg',
+    tag: 'Premium Sedan',
+    desc: 'Spacious 5-seater sedan with i-VTEC engine, automatic climate control, and plush seating for smooth city & highway travel.'
+  },
+  {
+    name: 'Maruti Suzuki Swift',
+    category: 'Hatchback',
+    image: '/cars/Suzuki-Swift-South-Africa-May-2022.webp',
+    tag: 'Popular Hatch',
+    desc: 'Fuel-efficient, easy handling 4-seater hatchback perfect for quick local trips and coastal exploration.'
+  },
+  {
+    name: 'Maruti Suzuki Baleno',
+    category: 'Hatchback',
+    image: '/cars/baleno.jpg',
+    tag: 'Comfort Hatch',
+    desc: 'Premium hatchback offering spacious legroom, smart features, and high fuel economy.'
+  },
+  {
+    name: 'Maruti Suzuki Celerio',
+    category: 'Hatchback',
+    image: '/cars/celerio.png',
+    tag: 'Budget Friendly',
+    desc: 'Compact hatchback for budget-conscious travellers exploring local attractions.'
+  },
+  {
+    name: 'Maruti Suzuki Ertiga',
+    category: 'SUV / MPV',
+    image: '/cars/ertiga.webp',
+    tag: 'Group Special',
+    desc: 'Versatile 6+1 seater family car featuring comfortable seating and dual AC.'
+  },
+  {
+    name: 'Tata Tiago',
+    category: 'Hatchback',
+    image: '/cars/tat tiago.webp',
+    tag: 'Safe & Compact',
+    desc: '4-star safety rated compact car designed for smooth coastal driving.'
+  },
+  {
+    name: 'Toyota Etios',
+    category: 'Sedan',
+    image: '/cars/toyota-etios.jpg',
+    tag: 'Reliable Sedan',
+    desc: 'Proven reliability with massive boot space, smooth suspension, and comfortable rear seating.'
+  },
+  {
+    name: 'Maruti Suzuki Wagon R',
+    category: 'Hatchback',
+    image: '/cars/wagon R.jpg',
+    tag: 'Tallboy Design',
+    desc: 'High headroom and easy ingress/egress, perfect for senior family members.'
+  }
+];
 
 const services = [
   {
@@ -99,6 +159,12 @@ const highlights = [
 
 export default function TaxiServicePage() {
   const [showReserve, setShowReserve] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+
+  const handleSelectVehicle = (vehicle) => {
+    setSelectedVehicle(vehicle);
+    setShowReserve(true);
+  };
 
   return (
     <section className="min-h-screen w-full bg-[#faf9f7] text-stone-900">
@@ -135,7 +201,7 @@ export default function TaxiServicePage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.129-1.125V14.25M3 14.25h18M12 4.5c-3.176 0-6.013 1.86-7.18 4.707l-1.445 3.513c-.068.165-.102.344-.102.525V14.25m17.25 0a1.125 1.125 0 001.125-1.125v-.312c0-.18-.034-.36-.102-.525l-1.445-3.513C18.013 6.36 15.176 4.5 12 4.5z" />
             </svg>
             <span className="text-blue-700 text-xs font-semibold tracking-widest uppercase font-sans">
-              Trusted Taxi & Sightseeing Service
+              Trusted Car & Taxi Rental Service
             </span>
           </motion.div>
 
@@ -154,7 +220,7 @@ export default function TaxiServicePage() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-stone-500 font-sans text-lg md:text-xl max-w-2xl mb-4 leading-relaxed"
           >
-            Experience the beauty of Coastal Karnataka with comfortable, safe, and affordable taxi services in{' '}
+            Experience the beauty of Coastal Karnataka with comfortable, safe, and affordable car & taxi services in{' '}
             <span className="text-stone-800 font-semibold">Murudeshwar, Karnataka</span>.
           </motion.p>
 
@@ -174,7 +240,10 @@ export default function TaxiServicePage() {
             transition={{ duration: 0.6, delay: 0.5 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setShowReserve(true)}
+            onClick={() => {
+              setSelectedVehicle(null);
+              setShowReserve(true);
+            }}
             className="px-10 py-4 bg-stone-900 text-white rounded-full font-sans font-semibold tracking-widest uppercase text-xs hover:bg-brand-gold transition-all duration-300 shadow-xl shadow-stone-900/10"
           >
             Book Your Ride Today
@@ -245,8 +314,8 @@ export default function TaxiServicePage() {
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-stone-200/60 border border-stone-100">
               <img
-                src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2670&auto=format&fit=crop"
-                alt="Taxi service on coastal road"
+                src="/cars/2022_Honda_City_ZX_i-VTEC_(India)_front_view_(cropped).jpg"
+                alt="Honda City ZX Car Rental"
                 className="w-full h-[400px] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent" />
@@ -259,16 +328,13 @@ export default function TaxiServicePage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-stone-800 font-sans">Naik Tour and Travels</p>
+                      <p className="text-sm font-semibold text-stone-800 font-sans">Naik Tour and Travels Fleet</p>
                       <p className="text-xs text-stone-400 font-sans">Murudeshwar, Karnataka</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Decorative elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-amber-100/50 rounded-full blur-xl -z-10" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-100/40 rounded-full blur-xl -z-10" />
           </motion.div>
         </div>
       </div>
@@ -379,6 +445,15 @@ export default function TaxiServicePage() {
         </div>
       </div>
 
+      {/* ─── BUTTON-CONTROLLED INTERACTIVE CAR FLEET SHOWCASE ─── */}
+      <VehicleScrollMarquee
+        title="Our Available Car Fleet"
+        subtitle="Explore our fleet using the Previous and Next buttons. Click any car to reserve!"
+        vehicles={CAR_FLEET}
+        type="car"
+        onSelectVehicle={handleSelectVehicle}
+      />
+
       {/* ─── Why Choose Us, Packages, and Fleet ─── */}
       <div className="w-full bg-white py-24 border-t border-stone-100">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -454,7 +529,7 @@ export default function TaxiServicePage() {
               </div>
             </motion.div>
 
-            {/* Our Fleet */}
+            {/* Our Fleet Overview */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -463,61 +538,24 @@ export default function TaxiServicePage() {
               className="lg:col-span-1"
             >
               <p className="font-mono text-xs tracking-[0.3em] uppercase text-brand-gold mb-3 font-semibold">
-                Our Fleet
+                Featured Fleet
               </p>
-              <h3 className="font-serif text-3xl text-stone-900 mb-6">Choose Your Ride</h3>
-              <div className="grid grid-cols-1 gap-4">
-                {[
-                  {
-                    name: 'Sedan Cars',
-                    capacity: '4+1 Seater',
-                    desc: 'Etios, Dzire — ideal for families',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.129-1.125V14.25M3 14.25h18M12 4.5c-3.176 0-6.013 1.86-7.18 4.707l-1.445 3.513c-.068.165-.102.344-.102.525V14.25m17.25 0a1.125 1.125 0 001.125-1.125v-.312c0-.18-.034-.36-.102-.525l-1.445-3.513C18.013 6.36 15.176 4.5 12 4.5z" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'SUV',
-                    capacity: '6+1 / 7+1 Seater',
-                    desc: 'Innova, Ertiga — premium comfort',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 17a2 2 0 11-4 0M9 17a2 2 0 11-4 0M5 17h10M4.5 13.5v-3a1.5 1.5 0 011.5-1.5h12a1.5 1.5 0 011.5 1.5v3M4.5 13.5h15M6.5 9l1.5-4h8l1.5 4" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Tempo Traveller',
-                    capacity: '12-14 Seater',
-                    desc: 'For groups & extended family tours',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 17a2 2 0 11-4 0M9 17a2 2 0 11-4 0M5 17h10M3 14.5v-6A1.5 1.5 0 014.5 7h15A1.5 1.5 0 0121 8.5v6M3 14.5h18M6.5 7v7.5M10.5 7v7.5M14.5 7v7.5" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Mini Bus',
-                    capacity: '20+ Seater',
-                    desc: 'Available on request for large events',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <rect x="3" y="6" width="18" height="11" rx="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 17a2 2 0 11-4 0M21 17a2 2 0 11-4 0M3 12h18M6 9h3m3 0h3m3 0h3M7 17h10" />
-                      </svg>
-                    )
-                  }
-                ].map((car) => (
-                  <div key={car.name} className="flex gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-100 hover:bg-white hover:shadow-lg hover:shadow-stone-200/40 transition-all duration-300">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-stone-100 flex items-center justify-center shrink-0 shadow-sm">
-                      {car.icon}
-                    </div>
-                    <div>
+              <h3 className="font-serif text-3xl text-stone-900 mb-6">Available Cars</h3>
+              <div className="grid grid-cols-1 gap-3">
+                {CAR_FLEET.slice(0, 4).map((car) => (
+                  <div 
+                    key={car.name} 
+                    onClick={() => handleSelectVehicle(car)}
+                    className="flex items-center gap-4 p-3 rounded-2xl bg-stone-50 border border-stone-100 hover:bg-white hover:shadow-md cursor-pointer transition-all duration-300"
+                  >
+                    <img
+                      src={car.image}
+                      alt={car.name}
+                      className="w-16 h-12 object-cover rounded-xl border border-stone-200"
+                    />
+                    <div className="flex-grow">
                       <h4 className="font-sans text-sm font-bold text-stone-800">{car.name}</h4>
-                      <p className="text-[10px] font-sans font-semibold text-brand-gold tracking-wider uppercase mb-1">{car.capacity}</p>
-                      <p className="text-xs text-stone-400 font-sans leading-normal">{car.desc}</p>
+                      <p className="text-[10px] font-sans font-semibold text-brand-gold uppercase">{car.category}</p>
                     </div>
                   </div>
                 ))}
@@ -566,7 +604,10 @@ export default function TaxiServicePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowReserve(true)}
+                  onClick={() => {
+                    setSelectedVehicle(null);
+                    setShowReserve(true);
+                  }}
                   className="px-10 py-4 bg-brand-gold text-black rounded-full font-sans font-semibold tracking-widest uppercase text-xs hover:bg-white hover:text-stone-900 transition-all duration-300 shadow-xl shadow-brand-gold/20"
                 >
                   Book Now
@@ -590,8 +631,15 @@ export default function TaxiServicePage() {
       <AnimatePresence>
         {showReserve && (
           <ReservationForm
-            destination={{ title: 'Naik Tour & Travels', price: 'Taxi Service Inquiry', image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2670&auto=format&fit=crop' }}
-            onClose={() => setShowReserve(false)}
+            destination={
+              selectedVehicle
+                ? { title: selectedVehicle.name, serviceType: 'Car', image: selectedVehicle.image }
+                : { title: 'Naik Tour & Travels', serviceType: 'Car', image: '/cars/2022_Honda_City_ZX_i-VTEC_(India)_front_view_(cropped).jpg' }
+            }
+            onClose={() => {
+              setShowReserve(false);
+              setSelectedVehicle(null);
+            }}
           />
         )}
       </AnimatePresence>

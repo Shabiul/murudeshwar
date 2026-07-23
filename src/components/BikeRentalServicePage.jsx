@@ -1,12 +1,71 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReservationForm from './ReservationForm';
+import VehicleScrollMarquee from './VehicleScrollMarquee';
 
-const bikes = [
+const BIKE_FLEET = [
+  {
+    name: 'Royal Enfield Hunter 350',
+    category: 'Cruiser',
+    image: '/bikes/2022-royal-enfield-hunter-350.webp',
+    tag: 'Cruiser Classic',
+    desc: 'Pure thumping retro cruiser with high stability and commanding riding stance for coastal highways.'
+  },
+  {
+    name: 'Suzuki Access 125',
+    category: 'Scooter',
+    image: '/bikes/access.png',
+    tag: 'Top Rated',
+    desc: 'Smooth 125cc gearless scooter with high storage capacity and comfortable seating for two.'
+  },
+  {
+    name: 'Bajaj Platina 100',
+    category: 'Commuter',
+    image: '/bikes/bajaj-platina-100-01-right-side-view_270x180.webp',
+    tag: 'High Mileage',
+    desc: 'Ultra-economical 100cc motorcycle with Comfortec suspension for long rides.'
+  },
+  {
+    name: 'Honda Shine 125',
+    category: 'Commuter',
+    image: '/bikes/honda shine.png',
+    tag: 'Executive Bike',
+    desc: 'Reliable 5-speed 125cc commuter motorcycle for smooth everyday riding.'
+  },
+  {
+    name: 'Honda SP 125',
+    category: 'Commuter',
+    image: '/bikes/honda sp 125.png',
+    tag: 'Sporty Commuter',
+    desc: 'Stylish digital instrument cluster, LED headlight, and high performance.'
+  },
+  {
+    name: 'Honda Activa 6G',
+    category: 'Scooter',
+    image: '/bikes/honda-activa-i-pic-21.webp',
+    tag: 'Most Popular',
+    desc: 'India’s favorite automatic scooter. Easy gearless operation for stress-free riding.'
+  },
+  {
+    name: 'TVS Jupiter 110',
+    category: 'Scooter',
+    image: '/bikes/jupiter.png',
+    tag: 'Comfort Ride',
+    desc: 'Soft suspension, external fuel filling, and wide footboard for maximum comfort.'
+  },
+  {
+    name: 'Bajaj Platina 110',
+    category: 'Commuter',
+    image: '/bikes/platina.png',
+    tag: 'Economy Commuter',
+    desc: 'First-in-segment 110cc engine with superior fuel efficiency and comfortable long riding seat.'
+  }
+];
+
+const services = [
   {
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
-        {/* Scooter Icon */}
         <circle cx="6.5" cy="16.5" r="2.5" />
         <circle cx="17.5" cy="16.5" r="2.5" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M17 5h-4l-2 5h6" />
@@ -21,7 +80,6 @@ const bikes = [
   {
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
-        {/* Royal Enfield & Cruiser Motorcycle Icon */}
         <circle cx="5" cy="16" r="3" />
         <circle cx="19" cy="16" r="3" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M10 9c1.5-1.5 4-1.5 5.5 0L17 11h-8l1-2z" />
@@ -38,7 +96,6 @@ const bikes = [
   {
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
-        {/* Adventure & Off-Road Bike Icon */}
         <circle cx="5" cy="16" r="3" />
         <circle cx="19" cy="16" r="3" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M14 4l1.5 3H12" />
@@ -55,7 +112,6 @@ const bikes = [
   {
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
-        {/* Premium Bicycle Icon */}
         <circle cx="5.5" cy="15.5" r="3.5" />
         <circle cx="18.5" cy="15.5" r="3.5" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M5.5 15.5l4.5-7h4.5l4 7" />
@@ -115,7 +171,7 @@ const highlights = [
     ),
   },
   {
-    label: 'Transparent Pricing',
+    label: 'Transparent Support',
     icon: (
       <svg className="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
@@ -126,6 +182,12 @@ const highlights = [
 
 export default function BikeRentalServicePage() {
   const [showReserve, setShowReserve] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+
+  const handleSelectVehicle = (vehicle) => {
+    setSelectedVehicle(vehicle);
+    setShowReserve(true);
+  };
 
   return (
     <section className="min-h-screen w-full bg-[#faf9f7] text-stone-900">
@@ -201,7 +263,10 @@ export default function BikeRentalServicePage() {
             transition={{ duration: 0.6, delay: 0.5 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setShowReserve(true)}
+            onClick={() => {
+              setSelectedVehicle(null);
+              setShowReserve(true);
+            }}
             className="px-10 py-4 bg-stone-900 text-white rounded-full font-sans font-semibold tracking-widest uppercase text-xs hover:bg-brand-gold transition-all duration-300 shadow-xl shadow-stone-900/10"
           >
             Rent Your Bike Now
@@ -270,8 +335,8 @@ export default function BikeRentalServicePage() {
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-stone-200/60 border border-stone-100">
               <img
-                src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2670&auto=format&fit=crop"
-                alt="Royal Enfield motorcycle on scenic road"
+                src="/bikes/2022-royal-enfield-hunter-350.webp"
+                alt="Royal Enfield Hunter 350 Bike Rental"
                 className="w-full h-[400px] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent" />
@@ -286,16 +351,13 @@ export default function BikeRentalServicePage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-stone-800 font-sans">Naik Bike Rentals</p>
+                      <p className="text-sm font-semibold text-stone-800 font-sans">Naik Bike Rentals Fleet</p>
                       <p className="text-xs text-stone-400 font-sans">Murudeshwar, Karnataka</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Decorative elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-emerald-100/50 rounded-full blur-xl -z-10" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-amber-100/40 rounded-full blur-xl -z-10" />
           </motion.div>
         </div>
       </div>
@@ -322,7 +384,7 @@ export default function BikeRentalServicePage() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bikes.map((bike, idx) => (
+            {services.map((bike, idx) => (
               <motion.div
                 key={bike.title}
                 initial={{ opacity: 0, y: 30 }}
@@ -420,6 +482,15 @@ export default function BikeRentalServicePage() {
         </div>
       </div>
 
+      {/* ─── BUTTON-CONTROLLED INTERACTIVE BIKE FLEET SHOWCASE ─── */}
+      <VehicleScrollMarquee
+        title="Our Available Bike Fleet"
+        subtitle="Browse our fleet using the Previous and Next buttons. Click any bike to rent!"
+        vehicles={BIKE_FLEET}
+        type="bike"
+        onSelectVehicle={handleSelectVehicle}
+      />
+
       {/* ─── Why Choose Us & Fleet Grid ─── */}
       <div className="w-full bg-white py-24 border-t border-stone-100">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -495,7 +566,7 @@ export default function BikeRentalServicePage() {
               </div>
             </motion.div>
 
-            {/* Our Fleet Specs */}
+            {/* Featured Bikes */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -504,68 +575,24 @@ export default function BikeRentalServicePage() {
               className="lg:col-span-1"
             >
               <p className="font-mono text-xs tracking-[0.3em] uppercase text-brand-gold mb-3 font-semibold">
-                Available Models
+                Featured Bikes
               </p>
-              <h3 className="font-serif text-3xl text-stone-900 mb-6">Popular Bikes</h3>
-              <div className="grid grid-cols-1 gap-4">
-                {[
-                  {
-                    name: 'Honda Activa 6G / Access 125',
-                    category: 'Gearless Scooter',
-                    desc: 'Easy riding for local city cruising & couples',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <circle cx="6" cy="18" r="2.5" />
-                        <circle cx="18" cy="18" r="2.5" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18H7.5L5.5 13H4M15 13h3.5l1 5M12 18l1.5-6h-3.5L8.5 7h4M12.5 12h2.5l2-4" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Royal Enfield Classic 350 / Bullet',
-                    category: 'Cruiser Motorcycle',
-                    desc: 'Legendary performance for coastal highway trails',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <circle cx="5" cy="18" r="2.5" />
-                        <circle cx="19" cy="18" r="2.5" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 8.5h4L16.5 12h-8L10 8.5z M5 18h14M16.5 12v3.5M7.5 18l1-6M16.5 18l-1.5-6M12 8.5V6a1.5 1.5 0 00-1.5-1.5H8" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Royal Enfield Himalayan',
-                    category: 'Adventure Tourer',
-                    desc: 'Long suspension, built for rugged explorer tracks',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <circle cx="5" cy="18" r="2.5" />
-                        <circle cx="19" cy="18" r="2.5" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 7.5h3L17 11h-9.5L10 7.5z M5 18h14M17 11l.5 4.5M6 18l1.5-7.5M17.5 18L16 11M13 7.5V5a1 1 0 00-1-1H9" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Firefox / Decathlon Hybrid',
-                    category: 'Geared Bicycle',
-                    desc: 'Healthy, eco-friendly way to explore nearby paths',
-                    icon: (
-                      <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <circle cx="5.5" cy="17.5" r="2.5" />
-                        <circle cx="18.5" cy="17.5" r="2.5" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 8.5a3 3 0 00-3-3h-2M12 5.5v12M5.5 17.5l5.5-7 7.5 7M15 8.5l3.5 9" />
-                      </svg>
-                    )
-                  }
-                ].map((bike) => (
-                  <div key={bike.name} className="flex gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-100 hover:bg-white hover:shadow-lg hover:shadow-stone-200/40 transition-all duration-300">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-stone-100 flex items-center justify-center shrink-0 shadow-sm">
-                      {bike.icon}
-                    </div>
-                    <div>
+              <h3 className="font-serif text-3xl text-stone-900 mb-6">Available Fleet</h3>
+              <div className="grid grid-cols-1 gap-3">
+                {BIKE_FLEET.slice(0, 4).map((bike) => (
+                  <div 
+                    key={bike.name} 
+                    onClick={() => handleSelectVehicle(bike)}
+                    className="flex items-center gap-4 p-3 rounded-2xl bg-stone-50 border border-stone-100 hover:bg-white hover:shadow-md cursor-pointer transition-all duration-300"
+                  >
+                    <img
+                      src={bike.image}
+                      alt={bike.name}
+                      className="w-16 h-12 object-cover rounded-xl border border-stone-200"
+                    />
+                    <div className="flex-grow">
                       <h4 className="font-sans text-sm font-bold text-stone-800">{bike.name}</h4>
-                      <p className="text-[10px] font-sans font-semibold text-brand-gold tracking-wider uppercase mb-1">{bike.category}</p>
-                      <p className="text-xs text-stone-400 font-sans leading-normal">{bike.desc}</p>
+                      <p className="text-[10px] font-sans font-semibold text-brand-gold uppercase">{bike.category}</p>
                     </div>
                   </div>
                 ))}
@@ -613,7 +640,10 @@ export default function BikeRentalServicePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowReserve(true)}
+                  onClick={() => {
+                    setSelectedVehicle(null);
+                    setShowReserve(true);
+                  }}
                   className="px-10 py-4 bg-brand-gold text-black rounded-full font-sans font-semibold tracking-widest uppercase text-xs hover:bg-white hover:text-stone-900 transition-all duration-300 shadow-xl shadow-brand-gold/20"
                 >
                   Book Your Bike
@@ -637,8 +667,15 @@ export default function BikeRentalServicePage() {
       <AnimatePresence>
         {showReserve && (
           <ReservationForm
-            destination={{ title: 'Naik Bike Rentals', price: 'Bike Rental Inquiry', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2670&auto=format&fit=crop' }}
-            onClose={() => setShowReserve(false)}
+            destination={
+              selectedVehicle
+                ? { title: selectedVehicle.name, serviceType: 'Bike', image: selectedVehicle.image }
+                : { title: 'Naik Bike Rentals', serviceType: 'Bike', image: '/bikes/2022-royal-enfield-hunter-350.webp' }
+            }
+            onClose={() => {
+              setShowReserve(false);
+              setSelectedVehicle(null);
+            }}
           />
         )}
       </AnimatePresence>

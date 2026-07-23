@@ -33,7 +33,7 @@ export const services = [
   {
     title: "Cab Rental Services",
     description: "Comfortable taxi & sightseeing services by Naik Tour and Travels. Local tours, outstation trips, airport transfers, and 24×7 taxi availability.",
-    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2670&auto=format&fit=crop",
+    image: "/cars/Suzuki-Swift-South-Africa-May-2022.webp",
     dark: true,
     accent: true,
     link: "/cab-rental"
@@ -41,7 +41,7 @@ export const services = [
   {
     title: "Bike Rental Services",
     description: "Explore Murudeshwar at your own pace with our premium Royal Enfield motorbikes & scooters. We offer cruiser bikes and cruisers for every trail.",
-    image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2670&auto=format&fit=crop",
+    image: "/bikes/2022-royal-enfield-hunter-350.webp",
     dark: true,
     link: "/bike-rental"
   }

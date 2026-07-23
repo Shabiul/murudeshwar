@@ -8,15 +8,16 @@ export default function ReservationForm({ destination, onClose }) {
         firstName: '',
         lastName: '',
         email: '',
+        phone: '',
         guests: '1 Guest',
         dates: ''
     });
     const [errors, setErrors] = useState({});
 
-    // Resolve details with safe fallbacks to prevent broken images
+    // Resolve details with safe fallbacks
     const displayInfo = {
         title: destination?.title || "Plan Your Journey",
-        price: destination?.price || "Tailored Experience",
+        serviceType: destination?.serviceType || null,
         image: destination?.image || destination?.images?.interior || "https://images.unsplash.com/photo-1476900543704-4312b78632f8?q=80&w=2670&auto=format&fit=crop"
     };
 
@@ -31,7 +32,7 @@ export default function ReservationForm({ destination, onClose }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // Simple client-side validation
+        // Client-side validation
         const newErrors = {};
         if (!formData.firstName.trim()) newErrors.firstName = "First name required";
         if (!formData.lastName.trim()) newErrors.lastName = "Last name required";
@@ -40,6 +41,7 @@ export default function ReservationForm({ destination, onClose }) {
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
             newErrors.email = "Invalid email format";
         }
+        if (!formData.phone.trim()) newErrors.phone = "Phone number required";
         if (!formData.dates) newErrors.dates = "Please select dates";
 
         if (Object.keys(newErrors).length > 0) {
@@ -47,20 +49,48 @@ export default function ReservationForm({ destination, onClose }) {
             return;
         }
 
-        // Save lead to Supabase / LocalStorage database for CRM
+        // Determine service type dynamically
+        const titleLower = displayInfo.title.toLowerCase();
+        let determinedServiceType = displayInfo.serviceType;
+        if (!determinedServiceType) {
+            if (
+                titleLower.includes('car') || titleLower.includes('honda') || titleLower.includes('swift') ||
+                titleLower.includes('baleno') || titleLower.includes('innova') || titleLower.includes('ertiga') ||
+                titleLower.includes('etios') || titleLower.includes('wagon') || titleLower.includes('tiago') ||
+                titleLower.includes('celerio') || titleLower.includes('taxi') || titleLower.includes('tour')
+            ) {
+                determinedServiceType = 'Car';
+            } else if (
+                titleLower.includes('bike') || titleLower.includes('activa') || titleLower.includes('enfield') ||
+                titleLower.includes('access') || titleLower.includes('platina') || titleLower.includes('shine') ||
+                titleLower.includes('jupiter') || titleLower.includes('hunter')
+            ) {
+                determinedServiceType = 'Bike';
+            } else if (titleLower.includes('scuba') || titleLower.includes('padi')) {
+                determinedServiceType = 'Scuba';
+            } else {
+                determinedServiceType = 'Stay';
+            }
+        }
+
+        // Complete lead data structure for CRM
         const newLead = {
             id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-            serviceType: 'Stay',
+            serviceType: determinedServiceType,
             name: `${formData.firstName} ${formData.lastName}`.trim(),
             email: formData.email.trim(),
-            phone: '',
+            phone: formData.phone.trim(),
             timestamp: new Date().toISOString(),
             status: 'pending',
-            adminNotes: '',
+            adminNotes: `Online reservation for ${displayInfo.title}`,
             details: {
                 roomTitle: displayInfo.title,
+                vehicleName: displayInfo.title,
+                bikeType: displayInfo.title,
                 guests: formData.guests,
-                dates: formData.dates
+                dates: formData.dates,
+                phone: formData.phone.trim(),
+                duration: `${formData.guests} • ${formData.dates}`
             }
         };
 
@@ -69,19 +99,24 @@ export default function ReservationForm({ destination, onClose }) {
                 const { error } = await supabase.from('leads').insert([{
                     name: newLead.name,
                     email: newLead.email,
-                    phone: null,
+                    phone: newLead.phone,
                     service_type: newLead.serviceType,
                     status: newLead.status,
-                    admin_notes: null,
+                    admin_notes: newLead.adminNotes,
                     details: newLead.details
                 }]);
                 if (error) throw error;
             } catch (error) {
-                console.warn("Supabase insert failed, falling back to localStorage:", error);
+                console.warn("Supabase insert failed, saving to localStorage crm_leads:", error);
+            } finally {
+                // Ensure local storage is always updated so CRM displays it instantly
                 const storedLeads = localStorage.getItem('crm_leads');
                 const leadsList = storedLeads ? JSON.parse(storedLeads) : [];
                 leadsList.unshift(newLead);
                 localStorage.setItem('crm_leads', JSON.stringify(leadsList));
+
+                // Dispatch custom event to notify open CRM windows/tabs
+                window.dispatchEvent(new Event('crmLeadsUpdated'));
             }
         };
         saveLead();
@@ -128,12 +163,14 @@ export default function ReservationForm({ destination, onClose }) {
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent" />
                                 <div className="absolute bottom-4 left-6">
                                     <h3 className="font-serif text-2xl text-white">{displayInfo.title}</h3>
-                                    <p className="text-brand-gold text-[11px] font-mono uppercase tracking-widest">{displayInfo.price}</p>
+                                    <p className="text-brand-gold text-[11px] font-mono uppercase tracking-widest">
+                                        Reservation Booking
+                                    </p>
                                 </div>
                             </div>
 
                             {/* Form Fields */}
-                            <div className="p-8 space-y-5">
+                            <div className="p-8 space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
                                         <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">First Name</label>
@@ -142,7 +179,7 @@ export default function ReservationForm({ destination, onClose }) {
                                             name="firstName"
                                             value={formData.firstName}
                                             onChange={handleInputChange}
-                                            className={`w-full bg-white/5 border ${errors.firstName ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
+                                            className={`w-full bg-white/5 border ${errors.firstName ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
                                             placeholder="John"
                                         />
                                         {errors.firstName && <span className="text-[10px] text-red-400 font-sans block">{errors.firstName}</span>}
@@ -154,55 +191,70 @@ export default function ReservationForm({ destination, onClose }) {
                                             name="lastName"
                                             value={formData.lastName}
                                             onChange={handleInputChange}
-                                            className={`w-full bg-white/5 border ${errors.lastName ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
+                                            className={`w-full bg-white/5 border ${errors.lastName ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
                                             placeholder="Doe"
                                         />
                                         {errors.lastName && <span className="text-[10px] text-red-400 font-sans block">{errors.lastName}</span>}
                                     </div>
                                 </div>
 
-                                <div className="space-y-1.5">
-                                    <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Email Address</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        className={`w-full bg-white/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
-                                        placeholder="john@example.com"
-                                    />
-                                    {errors.email && <span className="text-[10px] text-red-400 font-sans block">{errors.email}</span>}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Email Address</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            className={`w-full bg-white/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
+                                            placeholder="john@example.com"
+                                        />
+                                        {errors.email && <span className="text-[10px] text-red-400 font-sans block">{errors.email}</span>}
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Phone Number</label>
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            className={`w-full bg-white/5 border ${errors.phone ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors`}
+                                            placeholder="+91 98765 43210"
+                                        />
+                                        {errors.phone && <span className="text-[10px] text-red-400 font-sans block">{errors.phone}</span>}
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Guests</label>
+                                        <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Guests / Quantity</label>
                                         <select
                                             name="guests"
                                             value={formData.guests}
                                             onChange={handleInputChange}
-                                            className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors"
+                                            className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors"
                                         >
-                                            <option>1 Guest</option>
-                                            <option>2 Guests</option>
+                                            <option>1 Guest / Vehicle</option>
+                                            <option>2 Guests / Vehicles</option>
                                             <option>3-4 Guests</option>
                                             <option>5+ Guests</option>
                                         </select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Dates</label>
+                                        <label className="text-[10px] uppercase tracking-widest text-white/50 font-semibold block">Reservation Date</label>
                                         <input
                                             type="date"
                                             name="dates"
                                             value={formData.dates}
                                             onChange={handleInputChange}
-                                            className={`w-full bg-white/5 border ${errors.dates ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2.5 text-white/80 text-sm focus:outline-none focus:border-brand-gold transition-colors`}
+                                            className={`w-full bg-white/5 border ${errors.dates ? 'border-red-500' : 'border-white/10'} rounded-xl px-4 py-2 text-white/80 text-sm focus:outline-none focus:border-brand-gold transition-colors`}
                                         />
                                         {errors.dates && <span className="text-[10px] text-red-400 font-sans block">{errors.dates}</span>}
                                     </div>
                                 </div>
 
-                                <div className="pt-4">
+                                <div className="pt-3">
                                     <button
                                         type="submit"
                                         className="w-full py-4 bg-brand-gold hover:bg-white text-black font-sans font-bold uppercase tracking-widest rounded-xl transition-all duration-300 shadow-lg hover:shadow-brand-gold/10"
@@ -210,7 +262,7 @@ export default function ReservationForm({ destination, onClose }) {
                                         Confirm Reservation
                                     </button>
                                     <p className="text-center text-white/40 text-[9px] mt-3 uppercase tracking-wider font-mono">
-                                        Our concierge will contact you within 24 hours.
+                                        Our concierge team will review and confirm your booking.
                                     </p>
                                 </div>
                             </div>
@@ -246,7 +298,7 @@ export default function ReservationForm({ destination, onClose }) {
                             <div className="space-y-2">
                                 <h3 className="font-serif text-3xl text-white">Reservation Confirmed!</h3>
                                 <p className="text-stone-400 text-sm font-sans max-w-sm mx-auto">
-                                    Thank you, <span className="text-white font-medium">{formData.firstName}</span>. Your inquiry for the <span className="text-brand-gold font-medium">{displayInfo.title}</span> has been received. Our concierge team will reach out to you shortly.
+                                    Thank you, <span className="text-white font-medium">{formData.firstName}</span>. Your inquiry for <span className="text-brand-gold font-medium">{displayInfo.title}</span> has been saved and sent to our CRM. Our concierge team will reach out to you at <span className="text-white font-medium">{formData.phone}</span> shortly.
                                 </p>
                             </div>
 
