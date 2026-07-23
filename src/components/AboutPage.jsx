@@ -65,7 +65,7 @@ export default function AboutPage() {
                 {/* Hero Header */}
                 <div className="relative h-[45vh] rounded-[40px] overflow-hidden mb-16 shadow-lg border border-stone-200">
                     <img
-                        src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2670&auto=format&fit=crop"
+                        src="/Photos/about-landing-hero.jpg"
                         alt="About Us"
                         className="w-full h-full object-cover"
                     />

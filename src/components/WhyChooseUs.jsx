@@ -119,7 +119,7 @@ export default function WhyChooseUs() {
                         className="w-full h-full rounded-[40px] overflow-hidden border border-stone-200 shadow-2xl shadow-stone-300/40"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2650&auto=format&fit=crop"
+                            src="/Photos/ChatGPT Image Jul 23, 2026, 07_32_28 PM.png"
                             alt="Luxury Stay Interior"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
                         />

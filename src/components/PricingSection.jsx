@@ -20,6 +20,8 @@ export default function PricingSection() {
                             cardImage = "/cars/Suzuki-Swift-South-Africa-May-2022.webp";
                         } else if (titleLower.includes('bike')) {
                             cardImage = "/bikes/2022-royal-enfield-hunter-350.webp";
+                        } else if (titleLower.includes('beach') || titleLower.includes('stay')) {
+                            cardImage = "/Photos/DSC_0474.JPG";
                         }
 
                         const CardContent = () => (

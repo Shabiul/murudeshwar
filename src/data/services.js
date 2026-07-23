@@ -26,7 +26,7 @@ export const services = [
   {
     title: "Beach-Front Stay",
     description: "Wake up to the sound of waves in our exclusive beach-front accommodations with private terraces and ocean views.",
-    image: "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?q=80&w=3432&auto=format&fit=crop",
+    image: "/Photos/DSC_0474.JPG",
     dark: true,
     link: "/beach-front-stay"
   },

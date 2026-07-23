@@ -9,26 +9,14 @@ import WhyChooseUs from './WhyChooseUs';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HomePage() {
-    const containerRef = useRef(null);
-
     return (
         <main className="w-full bg-[#faf9f7]">
-            {/* 
-        SCROLL TRACK: 300vh height total.
-        Inside we have a STICKY container for the hero.
-      */}
-            <div ref={containerRef} className="relative h-[300vh]">
-                <div className="sticky top-0 h-screen w-full overflow-hidden">
-                    {/* Pass the container ref so HeroCanvas can use it as a trigger if needed, 
-              or simply rely on its internal logic knowing it's sticky */}
-                    <HeroCanvas scrollTrackRef={containerRef} />
-                </div>
+            {/* HERO SECTION */}
+            <div className="relative h-screen w-full overflow-hidden">
+                <HeroCanvas />
             </div>
 
-            {/* 
-        NEXT SECTION: Appears immediately after the 300vh track.
-        No negative margins needed. It just flows naturally.
-      */}
+            {/* CONTENT SECTIONS */}
             <div className="relative z-10 bg-[#faf9f7]">
                 <StatsAbout />
                 <PricingSection />
