@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import ReservationForm from './ReservationForm';
+import { ReservationForm } from '../modules/crm';
 import { useAuth } from '../context/AuthContext';
 
 export default function Header() {

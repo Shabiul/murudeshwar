@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import ReservationForm from './ReservationForm';
+import { ReservationForm } from '../modules/crm';
 
 export default function BeachFrontStayPage() {
     const [showReserve, setShowReserve] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScroll, useTransform } from 'framer-motion';
-import ReservationForm from './ReservationForm';
+import { ReservationForm } from '../modules/crm';
 
 export default function ServicePage({ title, subtitle, heroImage, description, features }) {
     const [showReserve, setShowReserve] = useState(false);

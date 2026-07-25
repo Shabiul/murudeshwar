@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CrmLayout from '../../../components/crm/CrmLayout';
+import { CrmLayout } from '../../crm';
 import RentalStatusBadge from '../../../components/shared/rental/RentalStatusBadge';
 import { useCarRental } from '../hooks/useCarRental';
 

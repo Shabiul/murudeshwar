@@ -22,26 +22,28 @@ import AboutPage from './components/AboutPage';
 import BeachFrontStayPage from './components/BeachFrontStayPage';
 import RoomDetailPage from './components/RoomDetailPage';
 import LoginPage from './components/LoginPage';
-import CrmDashboard from './components/CrmDashboard';
-import CrmOverview from './components/crm/CrmOverview';
-import CrmProtectedRoute from './components/crm/CrmProtectedRoute';
-import StaffManagementPage from './components/StaffManagementPage';
-import CreateStaffPage from './components/CreateStaffPage';
-import StaffDetailPage from './components/StaffDetailPage';
-import LeadDetailPage from './components/LeadDetailPage';
-import RoomManagementPage from './components/RoomManagementPage';
-import HousekeepingPage from './components/HousekeepingPage';
-import MaintenancePage from './components/MaintenancePage';
-import TaskManagerPage from './components/TaskManagerPage';
-import CustomerProfilePage from './components/CustomerProfilePage';
-import RoomDetailsPage from './components/RoomDetailsPage';
-import RoomCalendarPage from './components/RoomCalendarPage';
-import LostFoundPage from './components/LostFoundPage';
-import NotificationsPage from './components/NotificationsPage';
-import ReportsPage from './components/ReportsPage';
-import InventoryPage from './components/InventoryPage';
-import DocumentsPage from './components/DocumentsPage';
-import CommunicationPage from './components/crm/CommunicationPage';
+import {
+  CrmDashboard,
+  CrmOverview,
+  CrmProtectedRoute,
+  StaffManagementPage,
+  CreateStaffPage,
+  StaffDetailPage,
+  LeadDetailPage,
+  RoomManagementPage,
+  HousekeepingPage,
+  MaintenancePage,
+  TaskManagerPage,
+  CustomerProfilePage,
+  RoomDetailsPage,
+  RoomCalendarPage,
+  LostFoundPage,
+  NotificationsPage,
+  ReportsPage,
+  InventoryPage,
+  DocumentsPage,
+  CommunicationPage,
+} from './modules/crm';
 import BikeInventoryPage from './modules/bike-rental/components/BikeInventoryPage';
 import BikeBookingsPage from './modules/bike-rental/components/BikeBookingsPage';
 import CarInventoryPage from './modules/car-rental/components/CarInventoryPage';

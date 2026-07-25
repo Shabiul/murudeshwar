@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CrmLayout from '../../../components/crm/CrmLayout';
+import { CrmLayout } from '../../crm';
 import VehicleCard from '../../../components/shared/rental/VehicleCard';
 import VehicleInspectionModal from '../../../components/shared/rental/VehicleInspectionModal';
 import DamageReportModal from '../../../components/shared/rental/DamageReportModal';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSiteData } from '../hooks/useSiteData';
 import { roomsData as fallbackRoomsData } from '../data/roomsData';
-import ReservationForm from './ReservationForm';
+import { ReservationForm } from '../modules/crm';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function RoomDetailPage() {

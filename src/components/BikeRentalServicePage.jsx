@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ReservationForm from './ReservationForm';
+import { ReservationForm } from '../modules/crm';
 import VehicleScrollMarquee from './VehicleScrollMarquee';
 
 const BIKE_FLEET = [

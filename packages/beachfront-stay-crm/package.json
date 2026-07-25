@@ -1,0 +1,46 @@
+{
+  "name": "@murudeshwara/beachfront-stay-crm",
+  "version": "1.0.0",
+  "description": "Beach Front Stay CRM & Staff Management React Library for Murudeshwara Resort",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "framer-motion": "^10.0.0 || ^11.0.0 || ^12.0.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "classnames": "^2.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
+    "vite": "^5.3.1"
+  },
+  "keywords": [
+    "react",
+    "crm",
+    "resort",
+    "hotel-management",
+    "staff-management",
+    "beachfront-stay"
+  ],
+  "author": "Murudeshwara Engineering Team",
+  "license": "MIT"
+}
