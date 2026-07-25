@@ -1,7 +1,7 @@
 {
   "name": "@murudeshwara/beachfront-stay-crm",
   "version": "1.0.0",
-  "description": "Beach Front Stay CRM & Staff Management React Library for Murudeshwara Resort",
+  "description": "Zero-Configuration Single-Command Beach Front Stay CRM & Staff Management Full-Stack Library",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -9,22 +9,39 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./server": {
+      "import": "./backend/router.js"
+    },
+    "./schema.sql": "./backend/schema.sql"
+  },
+  "bin": {
+    "beachfront-stay-crm": "./bin/cli.js",
+    "beachfront-crm": "./bin/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "backend",
+    "bin"
   ],
   "scripts": {
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node bin/cli.js",
+    "start:server": "node backend/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "open": "^10.2.0"
   },
   "peerDependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "classnames": "^2.0.0",
+    "framer-motion": "^10.0.0 || ^11.0.0 || ^12.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
-    "framer-motion": "^10.0.0 || ^11.0.0 || ^12.0.0",
-    "@supabase/supabase-js": "^2.0.0",
-    "classnames": "^2.0.0"
+    "react-router-dom": "^6.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
@@ -36,6 +53,11 @@
   "keywords": [
     "react",
     "crm",
+    "backend",
+    "express",
+    "npx",
+    "cli",
+    "full-stack",
     "resort",
     "hotel-management",
     "staff-management",

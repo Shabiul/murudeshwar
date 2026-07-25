@@ -4,6 +4,7 @@ import { useSiteData } from '../hooks/useSiteData';
 import { roomsData as fallbackRoomsData } from '../data/roomsData';
 import { ReservationForm } from '../modules/crm';
 import { motion, AnimatePresence } from 'framer-motion';
+import WhatsAppIcon from './WhatsAppIcon';
 
 export default function RoomDetailPage() {
     const { roomId } = useParams();
@@ -273,11 +274,9 @@ export default function RoomDetailPage() {
                                     href={`https://wa.me/919459363333?text=Hello,%20I'm%20interested%20in%20booking%20the%20${encodeURIComponent(room.title)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full py-4 px-6 bg-[#071d32] hover:bg-[#0f2d4a] text-white font-sans text-xs tracking-widest font-semibold uppercase flex items-center justify-center gap-2 rounded-xl transition-all shadow-sm"
+                                    className="w-full py-4 px-6 bg-[#25D366] hover:bg-[#20BA56] text-white font-sans text-xs tracking-widest font-semibold uppercase flex items-center justify-center gap-2 rounded-xl transition-all shadow-sm"
                                 >
-                                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                                        <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.982L2 22l5.233-1.372a9.948 9.948 0 004.779 1.218h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.037-5.176-2.922-7.062A9.925 9.925 0 0012.012 2zm5.835 14.16c-.24.673-1.398 1.293-1.92 1.347-.478.05-1.096.068-1.748-.14a9.697 9.697 0 01-3.69-2.029l-.096-.084c-.31-.274-.633-.585-.92-0.89a9.123 9.123 0 01-2.062-2.955c-.244-.407-.272-.733-.082-.998.172-.24.372-.44.557-.655.127-.148.204-.265.297-.435.097-.183.05-.353-.025-.509-.074-.156-.665-1.602-.912-2.195-.24-.582-.487-.503-.665-.512h-.565c-.195 0-.51.073-.777.362-.267.288-1.02.996-1.02 2.429s1.042 2.818 1.187 3.014c.145.195 2.05 3.13 4.965 4.387 2.422 1.045 2.912.836 3.435.787.525-.049 1.69-.691 1.932-1.358.243-.668.243-1.24.17-1.358-.073-.119-.267-.195-.563-.343z" />
-                                    </svg>
+                                    <WhatsAppIcon className="w-4 h-4 fill-current" />
                                     Book via WhatsApp
                                 </a>
 

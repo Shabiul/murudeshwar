@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../utils/supabaseClient';
+import WhatsAppIcon from './WhatsAppIcon';
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -117,10 +118,21 @@ export default function ContactPage() {
                                 <p className="text-white/80 text-xl font-light">Prajwal Prajwal Venkatraman</p>
                             </div>
                             <div>
-                                <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Phone</h3>
-                                <p className="text-white/80 text-xl font-light">
-                                    <a href="tel:+919459363333" className="hover:text-brand-gold transition-colors">+91 94593 63333</a>
-                                </p>
+                                <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Phone & WhatsApp</h3>
+                                <div className="flex flex-wrap items-center gap-4">
+                                    <a href="tel:+919459363333" className="text-white/80 text-xl font-light hover:text-brand-gold transition-colors">
+                                        +91 94593 63333
+                                    </a>
+                                    <a
+                                        href="https://wa.me/919459363333"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366] rounded-full text-xs font-bold uppercase hover:bg-[#25D366] hover:text-white transition-all"
+                                    >
+                                        <WhatsAppIcon className="w-4 h-4 fill-current" />
+                                        WhatsApp Chat
+                                    </a>
+                                </div>
                             </div>
                             <div>
                                 <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Address</h3>

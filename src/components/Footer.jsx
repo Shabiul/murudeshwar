@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import WhatsAppIcon from './WhatsAppIcon';
 
 export default function Footer() {
     return (
@@ -22,8 +23,14 @@ export default function Footer() {
                         <h4 className="font-sans font-bold text-[10px] tracking-[0.2em] text-white/40 mb-6 uppercase">Get in Touch</h4>
                         <ul className="space-y-3 font-sans text-sm text-white/70">
                             <li><Link to="/contact" className="hover:text-brand-gold transition-colors">Contact</Link></li>
+                            <li><a href="tel:+919459363333" className="hover:text-brand-gold transition-colors">+91 94593 63333</a></li>
+                            <li>
+                                <a href="https://wa.me/919459363333" target="_blank" rel="noopener noreferrer" className="hover:text-[#25D366] transition-colors inline-flex items-center gap-1.5">
+                                    <WhatsAppIcon className="w-4 h-4 text-[#25D366] fill-current" />
+                                    WhatsApp
+                                </a>
+                            </li>
                             <li><Link to="/crew" className="hover:text-brand-gold transition-colors">Our Crew</Link></li>
-                            <li className="hover:text-white transition-colors cursor-pointer">Press</li>
                         </ul>
                     </div>
 

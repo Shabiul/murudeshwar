@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HeroCanvas from './components/HeroCanvas';
 import PricingSection from './components/PricingSection';
 import Footer from './components/Footer';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 import GenericPage from './components/GenericPage';
 import ServicePage from './components/ServicePage';
 import TaxiServicePage from './components/TaxiServicePage';
@@ -67,6 +68,7 @@ function ConditionalShell({ children }) {
     <>
       {!isCrm && <Header />}
       {children}
+      {!isCrm && <FloatingWhatsApp />}
       {!isCrm && <Footer />}
     </>
   );
