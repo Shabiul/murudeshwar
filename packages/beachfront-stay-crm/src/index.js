@@ -1,4 +1,8 @@
 // @murudeshwara/beachfront-stay-crm Barrel Export
+import './index.css';
+
+// Main Drop-in Reusable Component
+export { BeachfrontStayCRM, default as default } from './BeachfrontStayCRM';
 
 // Beach Front Stay CRM Components
 export { default as CrmLayout } from './components/CrmLayout';
@@ -41,4 +45,3 @@ export * from './utils/crmUpload';
 
 // Auth Context
 export * from './context/AuthContext';
-
