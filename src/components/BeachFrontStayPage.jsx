@@ -245,7 +245,7 @@ export default function BeachFrontStayPage() {
                                             View Details →
                                         </Link>
                                         <a
-                                            href={`https://wa.me/919459363333?text=Hello,%20I'm%20interested%20in%20booking%20the%20${encodeURIComponent(room.title)}`}
+                                            href={`https://wa.me/918988338383?text=Hello,%20I'm%20interested%20in%20booking%20the%20${encodeURIComponent(room.title)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="py-3 px-4 bg-[#25D366] hover:bg-[#20BA56] text-white rounded-full font-sans text-xs tracking-wider uppercase flex items-center justify-center gap-1.5 transition-colors shadow-sm font-semibold"

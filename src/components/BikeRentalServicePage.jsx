@@ -649,13 +649,13 @@ export default function BikeRentalServicePage() {
                   Book Your Bike
                 </motion.button>
                 <a
-                  href="tel:+919459363333"
+                  href="tel:+916366042504"
                   className="inline-flex items-center gap-2 px-10 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-sans font-semibold tracking-widest uppercase text-xs hover:bg-white/20 transition-all duration-300"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.824-1.806-5.165-4.148-6.97-6.97l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                   </svg>
-                  Call Us (+91 94593 63333)
+                  Call Us (+91 63660 42504)
                 </a>
               </div>
             </motion.div>

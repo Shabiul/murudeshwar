@@ -87,7 +87,7 @@ export default function WhyChooseUs() {
                         {/* CTA Row */}
                         <div className="flex flex-wrap gap-4">
                             <a
-                                href="https://wa.me/919459363333?text=Hi!%20I%20am%20interested%20in%20booking%20stays%20at%20Murudeshwar."
+                                href="https://wa.me/918988338383?text=Hi!%20I%20am%20interested%20in%20booking%20stays%20at%20Murudeshwar."
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#25D366] hover:bg-[#20BA56] text-white font-sans text-xs font-bold tracking-widest uppercase rounded-full shadow-md transition-all duration-300 hover:scale-105"
@@ -96,7 +96,7 @@ export default function WhyChooseUs() {
                                 WhatsApp
                             </a>
                             <a
-                                href="tel:+919459363333"
+                                href="tel:+918988338383"
                                 className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-sans text-xs font-bold tracking-widest uppercase rounded-full shadow-md transition-all duration-300 hover:scale-105"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

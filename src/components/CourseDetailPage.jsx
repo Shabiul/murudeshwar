@@ -287,7 +287,7 @@ export default function CourseDetailPage() {
           className="flex flex-col sm:flex-row gap-4"
         >
           <a
-            href="https://wa.me/919459363333"
+            href="https://wa.me/919202229292"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center gap-2.5 px-7 py-4 bg-[#25D366] hover:bg-[#20BA56] text-white font-sans font-bold text-sm tracking-wide rounded-2xl transition-all duration-300 hover:scale-[1.02]"
