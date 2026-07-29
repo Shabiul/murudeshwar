@@ -115,10 +115,10 @@ export default function ContactPage() {
                         <div className="space-y-8 font-sans">
                             <div>
                                 <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Contact Person</h3>
-                                <p className="text-white/80 text-xl font-light">Prajwal Prajwal Venkatraman</p>
+                                <p className="text-white/80 text-xl font-light">Prajwal Venkatraman</p>
                             </div>
                             <div>
-                                <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Phone & WhatsApp</h3>
+                                <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">General Phone & WhatsApp</h3>
                                 <div className="flex flex-wrap items-center gap-4">
                                     <a href="tel:+919459363333" className="text-white/80 text-xl font-light hover:text-brand-gold transition-colors">
                                         +91 94593 63333
@@ -134,6 +134,128 @@ export default function ContactPage() {
                                     </a>
                                 </div>
                             </div>
+
+                            {/* Direct Service Contacts */}
+                            <div className="pt-4 border-t border-white/10 space-y-4">
+                                <div>
+                                    <h3 className="text-brand-gold font-bold uppercase tracking-[0.2em] text-xs mb-1">
+                                        Direct Service Contacts
+                                    </h3>
+                                    <p className="text-white/40 text-xs font-light">
+                                        Reach out directly to our service departments
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    {/* Scuba */}
+                                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-brand-gold/40 transition-all group">
+                                        <div className="flex items-center justify-between mb-1.5">
+                                            <span className="text-brand-gold text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+                                                Scuba
+                                            </span>
+                                            <a
+                                                href="https://wa.me/919202229292"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-1 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all"
+                                                title="Chat on WhatsApp"
+                                            >
+                                                <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                                            </a>
+                                        </div>
+                                        <a
+                                            href="tel:+919202229292"
+                                            className="text-white text-lg font-light tracking-wide hover:text-brand-gold transition-colors block"
+                                        >
+                                            +91 92022 29292
+                                        </a>
+                                    </div>
+
+                                    {/* Stay */}
+                                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-brand-gold/40 transition-all group">
+                                        <div className="flex items-center justify-between mb-1.5">
+                                            <span className="text-brand-gold text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+                                                Stay
+                                            </span>
+                                            <a
+                                                href="https://wa.me/918988338383"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-1 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all"
+                                                title="Chat on WhatsApp"
+                                            >
+                                                <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                                            </a>
+                                        </div>
+                                        <a
+                                            href="tel:+918988338383"
+                                            className="text-white text-lg font-light tracking-wide hover:text-brand-gold transition-colors block"
+                                        >
+                                            +91 89883 38383
+                                        </a>
+                                    </div>
+
+                                    {/* Travels */}
+                                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-brand-gold/40 transition-all group">
+                                        <div className="flex items-center justify-between mb-1.5">
+                                            <span className="text-brand-gold text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+                                                Travels
+                                            </span>
+                                            <a
+                                                href="https://wa.me/919478383833"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-1 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all"
+                                                title="Chat on WhatsApp"
+                                            >
+                                                <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                                            </a>
+                                        </div>
+                                        <a
+                                            href="tel:+919478383833"
+                                            className="text-white text-lg font-light tracking-wide hover:text-brand-gold transition-colors block"
+                                        >
+                                            +91 94783 83833
+                                        </a>
+                                    </div>
+
+                                    {/* Bike Rental */}
+                                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-brand-gold/40 transition-all group">
+                                        <div className="flex items-center justify-between mb-1.5">
+                                            <span className="text-brand-gold text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+                                                Bike Rental
+                                            </span>
+                                            <a
+                                                href="https://wa.me/916366042504"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-1 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all"
+                                                title="Chat on WhatsApp"
+                                            >
+                                                <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                                            </a>
+                                        </div>
+                                        <a
+                                            href="tel:+916366042504"
+                                            className="text-white text-lg font-light tracking-wide hover:text-brand-gold transition-colors block"
+                                        >
+                                            +91 63660 42504
+                                        </a>
+                                        <a
+                                            href="mailto:murudeshwarapackages@gmail.com"
+                                            className="text-white/60 text-xs font-light hover:text-brand-gold transition-colors block mt-1 truncate"
+                                            title="murudeshwarapackages@gmail.com"
+                                        >
+                                            murudeshwarapackages@gmail.com
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div>
                                 <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Address</h3>
                                 <p className="text-white/80 text-lg font-light leading-relaxed">
@@ -145,7 +267,7 @@ export default function ContactPage() {
                             <div>
                                 <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-2">Email</h3>
                                 <p className="text-white/80 text-xl font-light">
-                                    <a href="mailto:concierge@murudeshwara.com" className="hover:text-brand-gold transition-colors">concierge@murudeshwara.com</a>
+                                    <a href="mailto:murudeshwarapackages@gmail.com" className="hover:text-brand-gold transition-colors">murudeshwarapackages@gmail.com</a>
                                 </p>
                             </div>
                         </div>
