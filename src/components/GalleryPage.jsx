@@ -2,6 +2,8 @@ import React from 'react';
 import { CircularGallery } from './ui/circular-gallery-2';
 import { useSiteData } from '../hooks/useSiteData';
 import { galleryData as fallbackGalleryData } from '../data/galleryData';
+import SEOHead from './SEOHead';
+import StructuredData, { getBreadcrumbSchema } from './StructuredData';
 
 export default function GalleryPage() {
     const { data: galleryData } = useSiteData('galleryData', fallbackGalleryData);
@@ -13,6 +15,17 @@ export default function GalleryPage() {
 
     return (
         <section className="min-h-screen bg-[#faf9f7] text-stone-900 relative flex flex-col justify-between overflow-hidden">
+            <SEOHead
+                title="Photo Gallery | Scuba Diving & Beachfront Stay Murudeshwar"
+                description="Explore high resolution photos of scuba diving at Netrani Island, beachfront stays, sunset views, and Murudeshwar Temple attractions."
+                path="/gallery"
+            />
+            <StructuredData
+                data={getBreadcrumbSchema([
+                    { name: 'Home', url: '/' },
+                    { name: 'Gallery', url: '/gallery' },
+                ])}
+            />
             {/* Header */}
             <div className="pt-32 pb-6 px-4 md:px-12 text-center z-10">
                 <div className="max-w-4xl mx-auto">

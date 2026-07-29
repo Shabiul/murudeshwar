@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSiteData } from '../hooks/useSiteData';
 import { attractions as fallbackAttractions } from '../data/attractions';
+import SEOHead from './SEOHead';
+import StructuredData, { getTouristAttractionSchema, getBreadcrumbSchema } from './StructuredData';
 
 // Premium SVG Icon Components (AI Slop-Free)
 const PinIcon = ({ className = "w-5 h-5" }) => (
@@ -40,6 +42,23 @@ export default function AttractionsPage() {
       className="min-h-screen w-full text-stone-900 bg-cover bg-fixed bg-center"
       style={{ backgroundImage: "url('/gallery/rocky_texture_bg.png')" }}
     >
+      <SEOHead
+        title="Tourist Places & Attractions in Murudeshwar"
+        description="Explore top attractions in Murudeshwar: Murudeshwar Shiva Temple, Netrani Island, Beach watersports, Mirjan Fort, and Honnavar backwaters."
+        path="/attractions"
+      />
+      <StructuredData
+        data={getBreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Attractions', url: '/attractions' },
+        ])}
+      />
+      {attractions.map((attraction) => (
+        <StructuredData
+          key={attraction.name}
+          data={getTouristAttractionSchema(attraction)}
+        />
+      ))}
       {/* Rock Climbing Adventure Hero Banner */}
       <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden flex items-center justify-center">
         <img 

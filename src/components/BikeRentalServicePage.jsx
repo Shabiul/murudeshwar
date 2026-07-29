@@ -2,6 +2,36 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ReservationForm } from '../modules/crm';
 import VehicleScrollMarquee from './VehicleScrollMarquee';
+import SEOHead from './SEOHead';
+import StructuredData, { getRentalProductSchema, getBreadcrumbSchema } from './StructuredData';
+import FAQSection from './FAQSection';
+
+const bikeFAQs = [
+  {
+    question: 'What documents are required to rent a bike in Murudeshwar?',
+    answer: 'You need a valid original Driving License (DL) and an original Government ID proof (Aadhaar Card, Voter ID, or Passport). Foreign nationals require an International Driving Permit (IDP) along with their passport.',
+  },
+  {
+    question: 'Are helmets provided with the bike rental?',
+    answer: 'Yes! Helmets are provided free of cost with every bike rental for driver and pillion safety. Wearing a helmet is mandatory by law in Karnataka.',
+  },
+  {
+    question: 'What types of bikes and scooters are available for rent?',
+    answer: 'Our fleet includes gearless scooters (Honda Activa 6G, Suzuki Access 125), commuter bikes (Honda Shine, SP 125, Bajaj Platina), and cruiser motorcycles (Royal Enfield Hunter 350). All vehicles are thoroughly serviced and well maintained.',
+  },
+  {
+    question: 'Is fuel included in the rental price?',
+    answer: 'Vehicles are provided with a minimal amount of fuel to reach the nearest petrol pump. You need to fill fuel according to your travel plans and return the vehicle with a similar fuel level.',
+  },
+  {
+    question: 'Can I rent a bike for trips to Gokarna or Honnavar?',
+    answer: 'Yes! Our bikes can be ridden anywhere within Karnataka including popular nearby destinations like Gokarna (80 km), Honnavar (25 km), Jog Falls (90 km), and Yana Caves.',
+  },
+  {
+    question: 'How do I book a bike rental in Murudeshwar?',
+    answer: 'You can book directly on our website by selecting your vehicle or call/WhatsApp our bike rental desk directly at +91 63660 42504 for instant confirmation.',
+  },
+];
 
 const BIKE_FLEET = [
   {
@@ -191,6 +221,29 @@ export default function BikeRentalServicePage() {
 
   return (
     <section className="min-h-screen w-full bg-[#faf9f7] text-stone-900">
+      <SEOHead
+        title="Bike Rental in Murudeshwar | Rent Scooty, Royal Enfield & Motorcycles"
+        description="Rent bikes & scooters in Murudeshwar at best daily rates. Honda Activa, Suzuki Access, Royal Enfield Hunter 350. Helmets provided, 24/7 support. Call +91 63660 42504."
+        path="/bike-rental"
+      />
+      <StructuredData
+        data={getBreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Bike Rental', url: '/bike-rental' },
+        ])}
+      />
+      {BIKE_FLEET.map((bike) => (
+        <StructuredData
+          key={bike.name}
+          data={getRentalProductSchema({
+            name: bike.name,
+            description: bike.desc,
+            category: bike.category,
+            image: bike.image,
+            url: '/bike-rental',
+          })}
+        />
+      ))}
       {/* ─── Hero Section ─── */}
       <div className="relative w-full overflow-hidden" style={{ minHeight: '85vh' }}>
         {/* Decorative background pattern */}
@@ -662,6 +715,12 @@ export default function BikeRentalServicePage() {
           </div>
         </motion.div>
       </div>
+
+      <FAQSection
+        faqs={bikeFAQs}
+        title="Bike Rental FAQ"
+        subtitle="Frequently asked questions about bike rentals in Murudeshwar"
+      />
 
       {/* Reservation Modal */}
       <AnimatePresence>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../utils/supabaseClient';
 import WhatsAppIcon from './WhatsAppIcon';
+import SEOHead from './SEOHead';
+import StructuredData, { getBreadcrumbSchema } from './StructuredData';
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -90,6 +92,17 @@ export default function ContactPage() {
 
     return (
         <section className="min-h-screen bg-[#0c0c0c] text-white pt-32 pb-20 relative overflow-hidden">
+            <SEOHead
+                title="Contact Us | Murudeshwara Beach Resort & Services"
+                description="Get in touch with Murudeshwara Beach Resort. Direct WhatsApp & phone contacts for stays (+91 89883 38383), scuba diving (+91 92022 29292), travels (+91 94783 83833), and bike rental (+91 63660 42504)."
+                path="/contact"
+            />
+            <StructuredData
+                data={getBreadcrumbSchema([
+                    { name: 'Home', url: '/' },
+                    { name: 'Contact', url: '/contact' },
+                ])}
+            />
             {/* Background Ambient */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-gold/5 rounded-full blur-[120px] pointer-events-none" />
 

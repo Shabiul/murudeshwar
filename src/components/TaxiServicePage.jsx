@@ -2,6 +2,32 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ReservationForm } from '../modules/crm';
 import VehicleScrollMarquee from './VehicleScrollMarquee';
+import SEOHead from './SEOHead';
+import StructuredData, { getRentalProductSchema, getBreadcrumbSchema } from './StructuredData';
+import FAQSection from './FAQSection';
+
+const cabFAQs = [
+  {
+    question: 'What cab services do you offer in Murudeshwar?',
+    answer: 'We offer airport transfers, local city sightseeing tours, outstation taxi service to Gokarna, Jog Falls, Goa, and Mangalore, as well as railway station pick-and-drop from Murdeshwar railway station.',
+  },
+  {
+    question: 'What vehicles are available in your cab fleet?',
+    answer: 'Our fleet includes compact hatchbacks (Swift, Baleno, Tiago, Celerio), premium sedans (Honda City), and spacious MPVs/SUVs (Ertiga) for family and group travel.',
+  },
+  {
+    question: 'How much does a cab from Murudeshwar to Gokarna cost?',
+    answer: 'Cab rates depend on the vehicle type (Sedan vs SUV) and trip type (one-way vs round-trip). Contact our travel desk directly at +91 94783 83833 for transparent, fixed-rate quotes with no hidden fees.',
+  },
+  {
+    question: 'Are driver charges and toll taxes included in outstation rentals?',
+    answer: 'Our quotes clearly detail all inclusions. Standard outstation packages include driver allowance and fuel charges. State entry taxes and toll fees are charged as applicable or included based on agreed package.',
+  },
+  {
+    question: 'Can I book a cab for a full-day sightseeing tour of Murudeshwar and nearby places?',
+    answer: 'Yes! We offer customized full-day and multi-day packages covering Murudeshwar Temple, Netrani Island boat jetty, Mirjan Fort, Honnavar Backwaters, and Yana Caves.',
+  },
+];
 
 const CAR_FLEET = [
   {
@@ -168,6 +194,29 @@ export default function TaxiServicePage() {
 
   return (
     <section className="min-h-screen w-full bg-[#faf9f7] text-stone-900">
+      <SEOHead
+        title="Cab & Taxi Rental in Murudeshwar | Outstation & Local Taxi Service"
+        description="Book cab & taxi rentals in Murudeshwar. Swift, Baleno, Honda City, Ertiga for airport transfers, Gokarna outstation, and local temple tours. Call +91 94783 83833."
+        path="/cab-rental"
+      />
+      <StructuredData
+        data={getBreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Cab Rental', url: '/cab-rental' },
+        ])}
+      />
+      {CAR_FLEET.map((car) => (
+        <StructuredData
+          key={car.name}
+          data={getRentalProductSchema({
+            name: car.name,
+            description: car.desc,
+            category: car.category,
+            image: car.image,
+            url: '/cab-rental',
+          })}
+        />
+      ))}
       {/* ─── Hero Section ─── */}
       <div className="relative w-full overflow-hidden" style={{ minHeight: '85vh' }}>
         {/* Decorative background pattern */}
@@ -626,6 +675,12 @@ export default function TaxiServicePage() {
           </div>
         </motion.div>
       </div>
+
+      <FAQSection
+        faqs={cabFAQs}
+        title="Cab Rental FAQ"
+        subtitle="Frequently asked questions about cab and taxi services in Murudeshwar"
+      />
 
       {/* Reservation Modal */}
       <AnimatePresence>

@@ -3,6 +3,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ReservationForm } from '../modules/crm';
 import WhatsAppIcon from './WhatsAppIcon';
+import SEOHead from './SEOHead';
+import StructuredData, { getLodgingSchema, getBreadcrumbSchema, getFAQSchema } from './StructuredData';
+import FAQSection from './FAQSection';
+
+const stayFAQs = [
+  {
+    question: 'What types of rooms are available at Murudeshwara Beach Resort?',
+    answer: 'We offer three room types: Standard Double Room (350 sqft with queen bed), Deluxe Double Room (400 sqft with balcony access and sunset views), and Deluxe Sea View Room (450 sqft with king bed and panoramic Arabian Sea views). All rooms include free WiFi, room service, and housekeeping.',
+  },
+  {
+    question: 'Is breakfast included with the room booking?',
+    answer: 'Breakfast is available as an optional add-on with all room types. We offer a mix of South Indian, North Indian, and continental breakfast options. You can add breakfast during booking or at check-in.',
+  },
+  {
+    question: 'What is the check-in and check-out time?',
+    answer: 'Check-in time is 12:00 PM (noon) and check-out time is 11:00 AM. Early check-in and late check-out can be arranged subject to availability — please contact us on WhatsApp at +91 89883 38383.',
+  },
+  {
+    question: 'How close is the resort to Murudeshwar Temple?',
+    answer: 'Our resort is located right on Beach Road, Murdeshwar Temple Main Rd — just a 2-minute walk from the famous Murudeshwar Temple and the world\'s second tallest Shiva statue. You can see the temple from our sea view rooms.',
+  },
+  {
+    question: 'Do you offer airport transfers?',
+    answer: 'Yes, we provide airport transfer services. The nearest airports are Hubli Airport (160 km) and Goa International Airport (230 km). We also offer cab services to/from Gokarna (80 km), Mangalore, and other nearby cities.',
+  },
+  {
+    question: 'Can I book a room and scuba diving course together?',
+    answer: 'Absolutely! We offer combo packages that include beachfront stay and PADI scuba diving courses at discounted rates. Contact us on WhatsApp for customized package deals.',
+  },
+];
 
 export default function BeachFrontStayPage() {
     const [showReserve, setShowReserve] = useState(false);
@@ -154,6 +184,13 @@ export default function BeachFrontStayPage() {
 
     return (
         <div className="min-h-screen bg-[#faf9f7] text-stone-900 pt-32 pb-24">
+            <SEOHead
+                title="Beach-Front Stay & Resort Rooms in Murudeshwar"
+                description="Book sea view rooms at Murudeshwara Beach Resort. Located on Beach Road near Murudeshwar Temple. Standard & Deluxe rooms with free WiFi, balcony, and modern amenities."
+                path="/beach-front-stay"
+            />
+            <StructuredData data={getLodgingSchema(rooms)} />
+            <StructuredData data={getBreadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Beach-Front Stay', url: '/beach-front-stay' }])} />
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Hero section */}
                 <div className="relative h-[55vh] rounded-[40px] overflow-hidden mb-20 shadow-lg border border-stone-200">
@@ -329,6 +366,11 @@ export default function BeachFrontStayPage() {
                     />
                 )}
             </AnimatePresence>
+            <FAQSection
+                faqs={stayFAQs}
+                title="Beachfront Stay FAQ"
+                subtitle="Common questions about staying in Murudeshwar"
+            />
         </div>
     );
 }

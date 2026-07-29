@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { useSiteData } from '../hooks/useSiteData';
 import { padiCourses as fallbackPadiCourses } from '../data/padiCourses';
 import WhatsAppIcon from './WhatsAppIcon';
+import SEOHead from './SEOHead';
+import StructuredData, { getCourseSchema, getBreadcrumbSchema } from './StructuredData';
 
 // ─── Small reusable components ────────────────────────────────────────────────
 
@@ -86,6 +88,20 @@ export default function CourseDetailPage() {
 
   return (
     <section className="min-h-screen w-full relative overflow-hidden">
+      <SEOHead
+        title={`${course.title} | Scuba Diving Murudeshwar`}
+        description={`${course.description} Duration: ${course.details?.duration}. Level: ${course.details?.level}. Book certified PADI scuba diving in Murudeshwar.`}
+        path={`/courses/${course.id}`}
+        image={course.image}
+      />
+      <StructuredData data={getCourseSchema(course)} />
+      <StructuredData
+        data={getBreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Scuba Diving Courses', url: '/courses' },
+          { name: course.title, url: `/courses/${course.id}` },
+        ])}
+      />
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-950 via-[#071828] to-slate-950" />
       <div

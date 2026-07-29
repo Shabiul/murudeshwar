@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useSiteData } from '../hooks/useSiteData';
 import { crew as fallbackCrew } from '../data/crew';
+import SEOHead from './SEOHead';
+import StructuredData, { getBreadcrumbSchema } from './StructuredData';
 
 export default function CrewPage() {
   const { data: crew } = useSiteData('crew', fallbackCrew);
@@ -10,6 +12,17 @@ export default function CrewPage() {
 
   return (
     <section className="min-h-screen w-full bg-[#0c0c0c] pt-32 pb-20 px-4 md:px-10">
+      <SEOHead
+        title="Meet Our Dive Crew & Instructors | Murudeshwara Dive Centre"
+        description="Meet the certified PADI scuba diving instructors and hospitality team at Murudeshwara Dive Centre."
+        path="/crew"
+      />
+      <StructuredData
+        data={getBreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Our Crew', url: '/crew' },
+        ])}
+      />
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

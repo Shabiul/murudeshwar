@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import SEOHead from './SEOHead';
+import StructuredData, { getBreadcrumbSchema } from './StructuredData';
 
 export default function AboutPage() {
     const { pathname } = useLocation();
@@ -61,6 +63,17 @@ export default function AboutPage() {
 
     return (
         <div className="min-h-screen bg-[#faf9f7] text-stone-900 pt-32 pb-24 px-6 md:px-12">
+            <SEOHead
+                title="About Us | Murudeshwara Beach Resort & Travel Services"
+                description="Learn about Murudeshwara Beach Resort — 15+ years offering prime beachfront accommodation, certified PADI scuba diving, and hassle-free bike & cab rentals in Murudeshwar."
+                path="/about"
+            />
+            <StructuredData
+                data={getBreadcrumbSchema([
+                    { name: 'Home', url: '/' },
+                    { name: 'About Us', url: '/about' },
+                ])}
+            />
             <div className="max-w-7xl mx-auto">
                 {/* Hero Header */}
                 <div className="relative h-[45vh] rounded-[40px] overflow-hidden mb-16 shadow-lg border border-stone-200">

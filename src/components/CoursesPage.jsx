@@ -3,6 +3,36 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useSiteData } from '../hooks/useSiteData';
 import { padiCourses as fallbackPadiCourses } from '../data/padiCourses';
+import SEOHead from './SEOHead';
+import StructuredData, { getCoursesListSchema, getBreadcrumbSchema, getFAQSchema } from './StructuredData';
+import FAQSection from './FAQSection';
+
+const scubaFAQs = [
+  {
+    question: 'What is PADI certification and why does it matter?',
+    answer: 'PADI (Professional Association of Diving Instructors) is the world\'s leading scuba diving training organization. A PADI certification is recognized globally and allows you to dive at any PADI affiliated dive centre worldwide. Our Murudeshwara Dive Centre is fully PADI certified.',
+  },
+  {
+    question: 'What is the best time for scuba diving in Murudeshwar?',
+    answer: 'The best time for scuba diving in Murudeshwar is from October to May, when the sea is calm and visibility is excellent (10-25 meters). The water temperature ranges from 26-30°C during this period, making it comfortable for diving without thick wetsuits.',
+  },
+  {
+    question: 'Do I need to know swimming for scuba diving in Murudeshwar?',
+    answer: 'For the Discover Scuba Diving experience (beginner program), basic comfort in water is sufficient — you don\'t need to be an expert swimmer. For PADI Open Water certification and above, you need to swim 200 meters and float for 10 minutes.',
+  },
+  {
+    question: 'How deep can I dive with a PADI Open Water certification?',
+    answer: 'With a PADI Open Water Diver certification, you can dive up to 18 meters (60 feet). The Advanced Open Water certification extends this to 30 meters (100 feet). Our dive sites at Murudeshwar and nearby Netrani Island offer depths suitable for all levels.',
+  },
+  {
+    question: 'What marine life can I see while diving in Murudeshwar?',
+    answer: 'Murudeshwar and nearby Netrani Island offer incredible marine biodiversity including reef sharks, manta rays, sea turtles, moray eels, barracudas, and colourful coral formations. Netrani Island is especially known for its whale shark sightings during season.',
+  },
+  {
+    question: 'How long does each PADI course take?',
+    answer: 'Discover Scuba Diving takes 1 day. PADI Open Water Diver takes 3-4 days. Advanced Open Water takes 2-3 days. Rescue Diver takes 3-4 days. Divemaster (professional level) takes 2-4 weeks depending on prior experience.',
+  },
+];
 
 const levelColors = {
   beginner:     'text-emerald-400 border-emerald-500/30 bg-emerald-950/30',
@@ -24,6 +54,15 @@ function LevelBadge({ level = '' }) {
 export default function CoursesPage() {
   const { data: padiCourses } = useSiteData('padiCourses', fallbackPadiCourses);
   return (
+    <>
+    <SEOHead
+      title="Scuba Diving Courses in Murudeshwar | PADI Certified Dive Centre"
+      description="Book PADI certified scuba diving courses in Murudeshwar, Karnataka. From beginner Discover Scuba to professional Divemaster. Expert instructors, best prices, Netrani Island dives."
+      path="/courses"
+    />
+    <StructuredData data={getCoursesListSchema(padiCourses)} />
+    <StructuredData data={getBreadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Scuba Diving Courses', url: '/courses' }])} />
+
     <section className="min-h-screen w-full relative pt-32 pb-24 px-4 md:px-10 overflow-hidden">
       {/* Ocean gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-950 via-blue-900 to-slate-950" />
@@ -152,5 +191,12 @@ export default function CoursesPage() {
         </motion.p>
       </div>
     </section>
+    <FAQSection
+      faqs={scubaFAQs}
+      title="Scuba Diving FAQ"
+      subtitle="Common questions about diving in Murudeshwar"
+      variant="dark"
+    />
+    </>
   );
 }
